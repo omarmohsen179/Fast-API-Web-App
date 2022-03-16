@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 app = FastAPI()
 # sqlalchemy uvicorn alembic fastapi pyodbc
 # alembic revision --autogenerate -m "create account table"
-#
+# pip freeze > requirements.txt
 app.include_router(auth.router)
 
 
