@@ -16,12 +16,12 @@ load_dotenv()
 GCP_PROJECT_ID = os.getenv('GCP_PROJECT_ID')
 SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
 STORAGE_BUCKET_NAME = os.getenv('STORAGE_BUCKET_NAME')
-print(dotenv_values(".env"))
+print(os.environ.get('STORAGE_BUCKET_NAME'))
 
 
 @app.get("/")
 def root():
-    return os.getenv("SERVICE_ACCOUNT_FILE")
+    return os.environ.get('STORAGE_BUCKET_NAME')
 
 
 if __name__ == "__main__":

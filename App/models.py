@@ -7,7 +7,7 @@ from App.database import Base
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "Appuser"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     Username = Column(String(255), unique=True, index=True, nullable=False)
     Email = Column(String(255), unique=True, index=True, nullable=False)

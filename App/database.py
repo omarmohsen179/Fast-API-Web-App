@@ -9,7 +9,7 @@ connection_url = URL.create(
     '''
 
 engine = create_engine(
-    "mssql+pyodbc://khalid:Y@$$er@2020@92.204.138.94/MD_MEDAD_WEB/Fast_Api_Test?driver=SQL+Server"
+    "mssql+pyodbc://omar:Om123456@92.204.138.94:53956/Fast_Api_Test?driver=SQL+Server"
 )
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False,)
 
