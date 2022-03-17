@@ -10,6 +10,16 @@ class User(BaseModel):
     ProfileImage: Optional[str]
 
 
+class LoginForm(BaseModel):
+    Username: str
+    Password: str
+
+
+class Item(BaseModel):
+    Id: int
+    Name: str
+
+
 class Response(BaseModel):
     success: bool
     Data: object
