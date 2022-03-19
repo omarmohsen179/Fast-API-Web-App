@@ -1,9 +1,6 @@
 
-from typing_extensions import Required
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Boolean, Column, Integer, String
 from App.database import Base
-from App.services.crud import crud
 
 
 class User(Base):
@@ -15,12 +12,8 @@ class User(Base):
     PhoneNumber = Column(String, nullable=True)
     ProfileImage = Column(String, nullable=True)
     IsActive = Column(Boolean, default=True)
+
     #items = relationship("Item", back_populates="owner")
-
-
-class UserCrud(crud):
-    def __init__(self):
-        self.model = User
 
 
 class Item(Base):
@@ -28,8 +21,3 @@ class Item(Base):
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     Name = Column(String(255))
     #items = relationship("Item", back_populates="owner")
-
-
-class ItemCrud(crud):
-    def __init__(self):
-        self.model = Item

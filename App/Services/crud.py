@@ -2,13 +2,15 @@
 from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 from fastapi.encoders import jsonable_encoder
+from App.models import Item, User
 from App.schemas import Response
+from App.services.base import Base
+from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
+
+ModelType = TypeVar("ModelType", bound=Base)
 
 
 class crud:
-
-    def get_filter(self, db: Session, condition):
-        return db.query(self.model).filter(condition)
 
     def get_pagenation(self, db: Session, skip: int = 0, limit: int = 100):
         return (
@@ -50,3 +52,13 @@ class crud:
             self.model.Id == id).delete()
         db.commit()
         return Response(success=True)
+
+
+class UserCrud(crud):
+    def __init__(self):
+        self.model = User
+
+
+class ItemCrud(crud):
+    def __init__(self):
+        self.model = Item

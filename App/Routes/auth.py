@@ -2,9 +2,9 @@
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
-from App import schemas, models
+from App import schemas
 from App.services.auth import create, login
-
+from App.services.crud import UserCrud, login
 router = APIRouter(
     prefix="/auth",
     tags=['auth']
@@ -14,7 +14,7 @@ db = get_db
 
 @router.get('/')
 def get_user(db: Session = Depends(db)):
-    return models.UserCrud().get_all(db)
+    return UserCrud().get_all(db)
 
 
 @router.post('/create-account')

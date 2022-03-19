@@ -13,8 +13,6 @@ def create(request: App.schemas.User, db: Session):
 
     new_user = App.models.User(Username=request.Username, Email=request.Email,
                                HashedPassword=password, PhoneNumber=request.PhoneNumber)
-
-    print(new_user)
     try:
         db.add(new_user)
         db.commit()
@@ -31,7 +29,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Invalid Credentials")
-    if not Hash.verify(user.Password, request.Password):
+    if not Hash.verify(user.HashedPassword, request.Password):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Incorrect password")
 
