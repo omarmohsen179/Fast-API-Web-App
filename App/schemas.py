@@ -5,9 +5,22 @@ from pydantic import BaseModel
 class User(BaseModel):
     Username: str
     Email: str
-    Password: str
     PhoneNumber:  Optional[str]
     ProfileImage: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
+class CreateAccount(BaseModel):
+    Username: str
+    Email: str
+    PhoneNumber:  Optional[str]
+    ProfileImage: Optional[str]
+    Password: str
+
+    class Config:
+        orm_mode = True
 
 
 class LoginForm(BaseModel):
@@ -53,4 +66,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    email: Optional[str] = None
+    username: Optional[str] = None

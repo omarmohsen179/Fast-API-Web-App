@@ -7,7 +7,7 @@ from App.security import token
 import App.models
 
 
-def create(request: App.schemas.User, db: Session):
+def create(request: App.schemas.CreateAccount, db: Session):
     password = Hash.bcrypt(request.Password)
     print(password)
 
