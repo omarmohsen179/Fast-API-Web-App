@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from App.models import Item, User, Role
-from App.schemas import Response  
+from App.schemas import Response
 from App.services.base import Base
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
@@ -37,22 +37,22 @@ class crud(Generic[ModelType]):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail=Response(success=False, Data=err))
 
-    def update(self, db: Session, object):
-
+    def add_list(self, db: Session, object):
         try:
-            ''' 
-                    id = object.Id
-                del object.Id
-                obj_in_data = jsonable_encoder(object)
-            db.query(self.model).filter(
-            # self.model.Id == id).update(obj_in_data, synchronize_session="fetch")
-            # db.commit()'''
-            blog = db.query(object).filter(self.model.Id == object.Id)
+            db.add_all(object)
+            db.commit()
+            # db.refresh(object)
+            return Response(success=True, Data=object)
+        except BaseException as err:
+            return str(err)
 
-            if not blog.first():
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                    detail=f"object with id {id} not found")
-            blog.update(object)
+    def update(self, db: Session, object):
+        try:
+            id = object.Id
+            del object.Id
+            obj_in_data = jsonable_encoder(object)
+            db.query(self.model).filter(
+                self.model.Id == id).update(obj_in_data, synchronize_session="fetch")
             db.commit()
             return Response(success=True, Data=object)
         except BaseException as err:
@@ -62,6 +62,11 @@ class crud(Generic[ModelType]):
     def delete(self, db: Session, id: int):
         db.query(self.model).filter(
             self.model.Id == id).delete()
+        db.commit()
+        return Response(success=True)
+
+    def delete_all(self, db: Session):
+        db.query(self.model).delete()
         db.commit()
         return Response(success=True)
 

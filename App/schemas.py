@@ -46,6 +46,11 @@ class ShowUser(BaseModel):
         orm_mode = True
 
 
+class Role(BaseModel):
+    Id: int
+    Name: str
+
+
 class ShowBlog(BaseModel):
     title: str
     body: str

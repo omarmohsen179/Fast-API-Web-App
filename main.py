@@ -2,7 +2,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from App.Routes import auth, item
+from App.Routes import auth, item, role
 from fastapi.testclient import TestClient
 app = FastAPI()
 # sqlalchemy uvicorn alembic fastapi pyodbc
@@ -10,7 +10,7 @@ app = FastAPI()
 # pip freeze > requirements.txt
 app.include_router(auth.router)
 app.include_router(item.router)
-
+app.include_router(role.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,16 +26,20 @@ def root():
     return {"running server"}
 
 
-client = TestClient(main.app)
+client = TestClient(app)
 
 
-def insial_data():
+def initial_data():
     response = client.post(
-        "/role",
-        json={"Name": "User"},
+        "/role/list",
+        json=[{"Id": 1, "Name": "User"},
+              {"Id": 2, "Name": "Admin"}
+              ],
     )
-    assert response.status_code == 200, response.text
+    # print(response)
+    #assert response.status_code == 200, response.text
 
 
+# initial_data()
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8001)
