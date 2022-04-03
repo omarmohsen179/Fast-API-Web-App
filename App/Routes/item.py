@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
 from App import schemas, models
-from App.services.crud import ItemCrud
+from App.Services.crud import ItemCrud
 from App.security.Oauth import get_current_user
 router = APIRouter(
     prefix="/item",

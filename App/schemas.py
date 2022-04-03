@@ -18,7 +18,7 @@ class CreateAccount(BaseModel):
     PhoneNumber:  Optional[str]
     ProfileImage: Optional[str]
     Password: str
-
+    RoleId: int
     class Config:
         orm_mode = True
 

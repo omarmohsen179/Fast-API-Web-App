@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
 from App import schemas, models
-from App.services.crud import RoleCrud
+from App.Services.crud import RoleCrud
 from App.security.Oauth import get_current_user
 router = APIRouter(
     prefix="/role",
@@ -25,7 +25,6 @@ def add(request: schemas.Role, db: Session = Depends(db)):
 @router.post('/list')
 def addlist(request: list[schemas.Role], db: Session = Depends(db)):
     xx = list(map(lambda e: models.Role(**e.dict()), request))
-    print(xx)
     return RoleCrud.add_list(db, xx)
 
 

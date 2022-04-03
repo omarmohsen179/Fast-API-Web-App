@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
 from App import schemas, models
-from App.services.auth import create, login
-from App.services.crud import UserCrud
+from App.Services.auth import create, login
+from App.Services.crud import UserCrud
 router = APIRouter(
     prefix="/auth",
     tags=['auth']

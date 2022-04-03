@@ -4,7 +4,7 @@ from fastapi import status, HTTPException
 from fastapi.encoders import jsonable_encoder
 from App.models import Item, User, Role
 from App.schemas import Response
-from App.services.base import Base
+from App.Services.base import Base
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 
