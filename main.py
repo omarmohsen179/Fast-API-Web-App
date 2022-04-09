@@ -4,10 +4,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.Routes import auth, item, role
 from fastapi.testclient import TestClient
-app = FastAPI()
 # sqlalchemy uvicorn alembic fastapi pyodbc
 # alembic revision --autogenerate -m "create account table"
+# alembic upgrade head
 # pip freeze > requirements.txt
+#uvicorn main:app --reload
+#Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
+# .\scripts\activate        
+# python -m pip install --upgrade pip  --force
+#.\scripts\activate.bat
+app = FastAPI()
+
 app.include_router(auth.router)
 app.include_router(item.router)
 app.include_router(role.router)
