@@ -3,16 +3,15 @@ import App.schemas
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, status, HTTPException
 from App.security.hashing import Hash
+
 from App.security import token
 import App.models
 
 
 def create(request: App.schemas.CreateAccount, db: Session):
     password = Hash.bcrypt(request.Password)
-    print(password)
-
-    new_user = App.models.User(Username=request.Username, Email=request.Email,
-                               HashedPassword=password, PhoneNumber=request.PhoneNumber)
+    del request.Password
+    new_user = App.models.User(**request.dict(),HashedPassword=password)
     try:
         db.add(new_user)
         db.commit()

@@ -16,7 +16,7 @@ db = get_db
 @router.get('/')
 def get_user(db: Session = Depends(db)):
     x = UserCrud.get_all(db)
-    return x
+    return x[0].Roles
 
 
 @router.post('/create-account')
@@ -27,3 +27,10 @@ def createAccount(request: schemas.CreateAccount, db: Session = Depends(db)):
 @router.post('/login')
 def Login(request: schemas.LoginForm, db: Session = Depends(db)):
     return login(request, db)
+@router.delete('/{id}')
+def createAccount(id: int, db: Session = Depends(db)):
+    return UserCrud.delete(db, id)
+
+@router.delete('/all/')
+def createAccount(db: Session = Depends(db)):
+    return UserCrud.delete_all(db)

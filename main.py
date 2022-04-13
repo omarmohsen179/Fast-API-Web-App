@@ -12,7 +12,8 @@ from fastapi.testclient import TestClient
 #Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
 # .\scripts\activate        
 # python -m pip install --upgrade pip  --force
-#.\scripts\activate.bat
+#uvicorn main:app --reload
+
 app = FastAPI()
 
 app.include_router(auth.router)

@@ -13,15 +13,16 @@ class User(Base):
     PhoneNumber = Column(String, nullable=True)
     ProfileImage = Column(String, nullable=True)
     IsActive = Column(Boolean, default=True)
-    Roles = relationship("Role", back_populates="User")
     RoleId = Column(Integer, ForeignKey("Roles.Id"))
+    Roles = relationship("Role", back_populates="Users")
+    
 
 
 class Role(Base):
     __tablename__ = "Roles"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     Name = Column(String(255), nullable=False)
-    User = relationship("User", back_populates="Roles")
+    Users = relationship("User", back_populates="Roles")
 
 
 class Item(Base):
