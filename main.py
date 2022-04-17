@@ -4,21 +4,23 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.Routes import auth, item, role
 from fastapi.testclient import TestClient
-# sqlalchemy uvicorn alembic fastapi pyodbc
+from fastapi.staticfiles import StaticFiles
+# sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
 # pip freeze > requirements.txt
-#uvicorn main:app --reload
-#Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
-# .\scripts\activate        
+# uvicorn main:app --reload
+# Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
+# .\scripts\activate
 # python -m pip install --upgrade pip  --force
-#uvicorn main:app --reload
+# uvicorn main:app --reload
 
 app = FastAPI()
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(auth.router)
 app.include_router(item.router)
 app.include_router(role.router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -50,4 +52,5 @@ def initial_data():
 
 # initial_data()
 if __name__ == "__main__":
+    app.debug = True
     uvicorn.run(app, host="localhost", port=8001)

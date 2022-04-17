@@ -1,15 +1,52 @@
 
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, status, Body
+from fastapi import APIRouter, Depends, status, Body, UploadFile, File
+from typing import List
 from App.database import get_db
 from App import schemas, models
 from App.Services.crud import ItemCrud
 from App.security.Oauth import get_current_user
+import os
+import logging
+import aiofiles
 router = APIRouter(
     prefix="/item",
     tags=['item']
 )
 db = get_db
+
+DESTINATION = "D:/Code/python/Fast-API-Web-App/"
+CHUNK_SIZE = 2 ** 20
+
+
+async def chunked_copy(src, dst):
+    await src.seek(0)
+    with open(dst, "wb") as buffer:
+        while True:
+            contents = await src.read(CHUNK_SIZE)
+            if not contents:
+
+                break
+
+            buffer.write(contents)
+
+
+@router.post("/upload-files")
+async def create_upload_files(files: List[UploadFile] = File(...)):
+    for file in files:
+        destination_file_path = "/home/fm-pc-lt-46/Music/" + \
+            file.filename  # output file path
+        async with aiofiles.open(destination_file_path, 'wb') as out_file:
+            while content := await file.read(1024):  # async read file chunk
+                await out_file.write(content)  # async write file chunk
+    return {"Result": "OK", "filenames": [file.filename for file in files]}
+
+
+@router.post("/upload-file")
+async def create_upload_file(file: UploadFile = File(...)):
+    fullpath = os.path.join(DESTINATION, file.filename)
+    await chunked_copy(file, fullpath)
+    return {"File saved to disk at": fullpath}
 
 
 @router.get('')

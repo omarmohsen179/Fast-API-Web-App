@@ -1,12 +1,21 @@
 from typing import List, Optional
+
 from pydantic import BaseModel
 
 
+class Role(BaseModel):
+    Id: int
+    Name: str
+
+
 class User(BaseModel):
-    Username: str
-    Email: str
-    PhoneNumber:  Optional[str]
+    Id: int
+    Username: Optional[str]
+    Email: Optional[str]
+    PhoneNumber: Optional[str]
     ProfileImage: Optional[str]
+    IsActive: Optional[bool]
+    Role: Optional[str]
 
     class Config:
         orm_mode = True
@@ -19,6 +28,7 @@ class CreateAccount(BaseModel):
     ProfileImage: Optional[str]
     Password: str
     RoleId: int
+
     class Config:
         orm_mode = True
 
@@ -46,11 +56,6 @@ class ShowUser(BaseModel):
         orm_mode = True
 
 
-class Role(BaseModel):
-    Id: int
-    Name: str
-
-
 class ShowBlog(BaseModel):
     title: str
     body: str
@@ -72,3 +77,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+    role: Optional[str] = None

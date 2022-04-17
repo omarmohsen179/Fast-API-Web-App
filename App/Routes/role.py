@@ -24,8 +24,8 @@ def add(request: schemas.Role, db: Session = Depends(db)):
 
 @router.post('/list')
 def addlist(request: list[schemas.Role], db: Session = Depends(db)):
-    xx = list(map(lambda e: models.Role(**e.dict()), request))
-    return RoleCrud.add_list(db, xx)
+    values = list(map(lambda e: models.Role(**e.dict()), request))
+    return RoleCrud.add_list(db, values)
 
 
 @router.put('')
