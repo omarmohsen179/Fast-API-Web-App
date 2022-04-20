@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
 from App import schemas, models
 from App.Services.crud import RoleCrud
-from App.security.Oauth import get_current_user
+from App.Security.Oauth import get_current_user
 router = APIRouter(
     prefix="/role",
     tags=['role']

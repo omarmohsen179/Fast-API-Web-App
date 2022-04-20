@@ -9,7 +9,6 @@ from fastapi.staticfiles import StaticFiles
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
 # pip freeze > requirements.txt
-# uvicorn main:app --reload
 # Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force

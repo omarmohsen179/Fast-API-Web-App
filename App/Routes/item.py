@@ -1,57 +1,107 @@
 
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends, status, Body, UploadFile, File
+from fastapi import APIRouter,  BackgroundTasks,  Depends, status, Body, UploadFile, File, HTTPException
 from typing import List
 from App.database import get_db
+from starlette.responses import JSONResponse
 from App import schemas, models
 from App.Services.crud import ItemCrud
-from App.security.Oauth import get_current_user
-import os
-import logging
-import aiofiles
+from App.Security.Oauth import get_current_user
+from App.Services.image_uploader import upload_file, upload_files
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+from pydantic import EmailStr, BaseModel
+from App.Services.send_mail import *
 router = APIRouter(
     prefix="/item",
     tags=['item']
 )
 db = get_db
 
-DESTINATION = "D:/Code/python/Fast-API-Web-App/"
-CHUNK_SIZE = 2 ** 20
+
+class EmailSchema(BaseModel):
+    email: List[EmailStr]
+
+    """MAIL_SERVER="smtp.gmail.com",
+    MAIL_USERNAME="mohsenomar350@gmail.com",
+    MAIL_FROM="mohsenomar350@gmail.com",
+    MAIL_FROM_NAME="MAIL_FROM_NAME",
+    MAIL_PASSWORD="Thanks010066@","""
 
 
-async def chunked_copy(src, dst):
-    await src.seek(0)
-    with open(dst, "wb") as buffer:
-        while True:
-            contents = await src.read(CHUNK_SIZE)
-            if not contents:
+confzz = ConnectionConfig(
+    MAIL_USERNAME="ALmedad Soft",
+    MAIL_PASSWORD="V@123456",
+    MAIL_FROM="verify@almedadsoft.com",
+    MAIL_PORT=465,
+    MAIL_SERVER="mail.almedadsoft.com",
+    MAIL_FROM_NAME="ALmedad Soft",
+    MAIL_TLS=True,
+    MAIL_SSL=False,
+    USE_CREDENTIALS=True,
+    VALIDATE_CERTS=True,
 
-                break
+)
+conf = ConnectionConfig(
+    MAIL_SERVER="smtp.gmail.com",
+    MAIL_USERNAME="mohsenomar350@gmail.com",
+    MAIL_FROM="mohsenomar350@gmail.com",
+    MAIL_FROM_NAME="MAIL_FROM_NAME",
+    MAIL_PASSWORD="Thanks010066@",
+    MAIL_PORT=587,
+    MAIL_TLS=True,
+    MAIL_SSL=False,
+)
+html = """
+        <html>
+        <body>
+         
+ 
+<p>Hi !!!
+        <br>Thanks for using fastapi mail, keep using it..!!!</p>
+ 
+ 
+        </body>
+        </html>
+        """
 
-            buffer.write(contents)
+
+@router.get('/send-email/asynchronous')
+async def send_email_asynchronous():
+    await send_email_async('Hello World', 'omar179771@bue.edu.eg', {
+        'title': 'Hello World hi thier',
+        'name': 'John Doe hi thier'
+    })
+    return 'Success'
+
+
+@router.get('/send-email/backgroundtasks')
+def send_email_backgroundtasks(background_tasks: BackgroundTasks):
+    send_email_background(background_tasks, 'Hello World', 'someemail@gmail.com', {
+        'title': 'Hello World',
+        'name': 'John Doe'
+    })
+    return 'Success'
 
 
 @router.post("/upload-files")
-async def create_upload_files(files: List[UploadFile] = File(...)):
-    for file in files:
-        destination_file_path = "/home/fm-pc-lt-46/Music/" + \
-            file.filename  # output file path
-        async with aiofiles.open(destination_file_path, 'wb') as out_file:
-            while content := await file.read(1024):  # async read file chunk
-                await out_file.write(content)  # async write file chunk
-    return {"Result": "OK", "filenames": [file.filename for file in files]}
+async def cont_upload_files(files: List[UploadFile] = File(...)):
+    image = (await upload_file(files))
+    if not image.isOk:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=image.result)
+    return image
 
 
 @router.post("/upload-file")
-async def create_upload_file(file: UploadFile = File(...)):
-    fullpath = os.path.join(DESTINATION, file.filename)
-    await chunked_copy(file, fullpath)
-    return {"File saved to disk at": fullpath}
+async def cont_upload_file(file: UploadFile = File(...)):
+    image = (await upload_file(file))
+    if not image.isOk:
+        return JSONResponse(status_code=400, content=image.dict())
+    return JSONResponse(status_code=200, content=image.dict())
 
 
 @router.get('')
-def get_user(db: Session = Depends(db), current_user: schemas.User = Depends(get_current_user)):
-    print(current_user)
+def get_user(db: Session = Depends(db)):
     return ItemCrud.get_all(db)
 
 
