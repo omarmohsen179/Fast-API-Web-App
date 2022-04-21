@@ -21,57 +21,14 @@ db = get_db
 class EmailSchema(BaseModel):
     email: List[EmailStr]
 
-    """MAIL_SERVER="smtp.gmail.com",
-    MAIL_USERNAME="mohsenomar350@gmail.com",
-    MAIL_FROM="mohsenomar350@gmail.com",
-    MAIL_FROM_NAME="MAIL_FROM_NAME",
-    MAIL_PASSWORD="Thanks010066@","""
-
-
-confzz = ConnectionConfig(
-    MAIL_USERNAME="ALmedad Soft",
-    MAIL_PASSWORD="V@123456",
-    MAIL_FROM="verify@almedadsoft.com",
-    MAIL_PORT=465,
-    MAIL_SERVER="mail.almedadsoft.com",
-    MAIL_FROM_NAME="ALmedad Soft",
-    MAIL_TLS=True,
-    MAIL_SSL=False,
-    USE_CREDENTIALS=True,
-    VALIDATE_CERTS=True,
-
-)
-conf = ConnectionConfig(
-    MAIL_SERVER="smtp.gmail.com",
-    MAIL_USERNAME="mohsenomar350@gmail.com",
-    MAIL_FROM="mohsenomar350@gmail.com",
-    MAIL_FROM_NAME="MAIL_FROM_NAME",
-    MAIL_PASSWORD="Thanks010066@",
-    MAIL_PORT=587,
-    MAIL_TLS=True,
-    MAIL_SSL=False,
-)
-html = """
-        <html>
-        <body>
-         
- 
-<p>Hi !!!
-        <br>Thanks for using fastapi mail, keep using it..!!!</p>
- 
- 
-        </body>
-        </html>
-        """
-
 
 @router.get('/send-email/asynchronous')
 async def send_email_asynchronous():
-    await send_email_async('Hello World', 'omar179771@bue.edu.eg', {
+    await send_email_async('Hello World', ['Mohamedkoriam9999@gmail.com', "mohsenomar350@gmail.com"], {
         'title': 'Hello World hi thier',
         'name': 'John Doe hi thier'
     })
-    return 'Success'
+    return 'Success Mohamedkoriam9999@gmail.com'
 
 
 @router.get('/send-email/backgroundtasks')
