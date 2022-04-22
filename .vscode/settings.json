@@ -1,4 +1,3 @@
 {
-    "appService.defaultWebAppToDeploy": "/subscriptions/f6540eaf-ce2e-433e-8fb1-fdd26a9597e2/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/GammingBranch2",
-    "appService.deploySubpath": "."
+  "appService.defaultWebAppToDeploy": "None"
 }
