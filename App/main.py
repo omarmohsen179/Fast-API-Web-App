@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force
 # uvicorn App.main:app --reload
-# git push --force azure
+# git push --force azurex
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 # app.include_router(App.)
