@@ -2,6 +2,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -32,21 +33,5 @@ def root():
     return {"running server here we go"}
 
 
-client = TestClient(app)
-
-
-def initial_data():
-    response = client.post(
-        "/role/list",
-        json=[{"Id": 1, "Name": "User"},
-              {"Id": 2, "Name": "Admin"}
-              ],
-    )
-    # print(response)
-    #assert response.status_code == 200, response.text
-
-
-# initial_data()
 if __name__ == "__main__":
-    app.debug = True
-    uvicorn.run(app, host="20.36.106.96")
+    uvicorn.run(app, host="fag1.azurewebsites.net", port=8232)
