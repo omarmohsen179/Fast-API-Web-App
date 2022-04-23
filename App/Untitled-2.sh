@@ -14,12 +14,12 @@ az account list -o table
 # set the default subscription for subsequent operations
 az account set --subscription $SUBSCRIPTION
 # create a resource group for your application
-az group create --name $RESOURCEGROUP --location $LOCATION
+#az group create --name $RESOURCEGROUP --location $LOCATION
 # create an appservice plan (a machine) where your site will run
 #az appservice plan create --name $PLANNAME --location $LOCATION --is-linux --sku $PLANSKU --resource-group $RESOURCEGROUP
 # create the web application on the plan
 # specify the node version your app requires
-az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
+#az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
 
 # To set up deployment from a local git repository, uncomment the following commands.
 # first, set the username and password (use environment variables!)
