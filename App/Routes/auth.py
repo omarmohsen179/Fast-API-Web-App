@@ -4,12 +4,12 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
 from App import schemas, models
-from App.Services.auth import create, login
-from App.Services.crud import UserCrud, RoleCrud
+from App.services.auth import create, login
+from App.services.crud import UserCrud, RoleCrud
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
-from App.Security.Oauth import get_current_user, get_current_admin
+from App.security.Oauth import get_current_user, get_current_admin
 router = APIRouter(
     prefix="/auth",
     tags=['auth']
