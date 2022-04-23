@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
-from App.Routes import *
+from App.Routes.auth import *
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -13,11 +13,11 @@ from fastapi.staticfiles import StaticFiles
 # Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force
-# uvicorn main:app --reload
+# uvicorn App.main:app --reload
 
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
+app.include_router(routerauth)
 
 app.add_middleware(
     CORSMiddleware,
@@ -26,6 +26,8 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+
+app.
 
 
 @app.get("/")
