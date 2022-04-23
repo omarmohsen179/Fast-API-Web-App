@@ -10,17 +10,6 @@ engine = create_engine(
 )
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False,)
 Base = declarative_base()
-metadata = MetaData()
-
-notes = Table(
-    "notes",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("text", String),
-    Column("completed", Boolean),
-)
-
-metadata.create_all(engine)
 
 
 def get_db():
