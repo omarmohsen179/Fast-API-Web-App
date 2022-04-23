@@ -50,4 +50,4 @@ def initial_data():
 # initial_data()
 if __name__ == "__main__":
     app.debug = True
-    uvicorn.run(app, host="fag1.azurewebsites.net", port=8232)
+    uvicorn.run(app, host="fag1.azurewebsites.net", port=443)

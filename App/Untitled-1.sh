@@ -33,7 +33,7 @@ az webapp deployment source config-local-git --name $SITENAME --resource-group $
 
 # the previous command returned the git remote to deploy to
 # use this to set up a new remote named "azure"
-git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
+git remote add azure "https://omarmohsen179@FAG1.scm.azurewebsites.net/FAG1.git"
 # push master to deploy the site
 git push azure master
 
