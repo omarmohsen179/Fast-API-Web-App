@@ -32,7 +32,7 @@ app.add_middleware(
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 4"}
+    return {"running server here we go 5"}
 
 
 client = TestClient(app)
