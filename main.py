@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 import uvicorn
-from App.routes.role import router
+#from App.routes.role import router
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
@@ -26,7 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
-app.include_router(router)
+# app.include_router(router)
 
 
 @app.get("/")
