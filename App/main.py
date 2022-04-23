@@ -1,11 +1,13 @@
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.testclient import TestClient
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
+from fastapi.middleware.gzip import GZipMiddleware
+from App.database import *
 from App.Routes import auth, item, role
-from fastapi.testclient import TestClient
-from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
@@ -19,6 +21,7 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,9 +29,17 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+
+app.add_middleware(GZipMiddleware)
 app.include_router(auth.router)
 app.include_router(item.router)
 app.include_router(role.router)
+
+
+@app.get("/db")
+def root():
+    # return RedirectResponse(url="/docs/")
+    return {"running server here we go 4"}
 
 
 @app.get("/")
