@@ -61,7 +61,7 @@ def get_user(db: Session = Depends(db)):
     try:
         return crud.ItemCrud.get_all(db)
     except BaseException as err:
-        return err
+        return err.args
 
 
 @router.post('')
