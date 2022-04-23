@@ -4,8 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, Body
 from App.database import get_db
 from App import schemas, models
-from App.services.crud import UserCrud, RoleCrud
-from App.services.auth import create, login
+from App.Services import crud, auth
 
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -28,12 +27,12 @@ def get_user(db: Session = Depends(db)):
 
 @Routerauth.post('/create-account')
 def createAccount(request: schemas.CreateAccount, db: Session = Depends(db)):
-    return create(request, db)
+    return auth.create(request, db)
 
 
 @Routerauth.post('/login')
 def Login(request: schemas.LoginForm, db: Session = Depends(db)):
-    return login(request, db)
+    return auth.login(request, db)
 
 
 @Routerauth.get('/admin')
@@ -48,9 +47,9 @@ def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(get_c
 
 @Routerauth.delete('/{id}')
 def createAccount(id: int, db: Session = Depends(db)):
-    return UserCrud.delete(db, id)
+    return crud.UserCrud.delete(db, id)
 
 
 @Routerauth.delete('/all/')
 def createAccount(db: Session = Depends(db)):
-    return UserCrud.delete_all(db)
+    return crud.UserCrud.delete_all(db)

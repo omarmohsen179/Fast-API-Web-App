@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from App.Services import crud
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
-from App.Routes import Routerauth
+from App.Routes import auth
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -18,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 # git push --force azurex
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-# app.include_router(App.)
+app.include_router(auth.Routerauth)
 
 app.add_middleware(
     CORSMiddleware,
