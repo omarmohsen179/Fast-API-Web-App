@@ -5,9 +5,8 @@ from typing import List
 from App.database import get_db
 from starlette.responses import JSONResponse
 from App import schemas, models
-from App.Services.crud import ItemCrud
+from App.Services import crud, image_uploader
 from App.security.Oauth import get_current_user
-from App.Services.image_uploader import upload_file, upload_files
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from pydantic import EmailStr, BaseModel
 from App.Services.send_mail import *
@@ -42,7 +41,7 @@ def send_email_backgroundtasks(background_tasks: BackgroundTasks):
 
 @router.post("/upload-files")
 async def cont_upload_files(files: List[UploadFile] = File(...)):
-    image = (await upload_file(files))
+    image = (await image_uploader.upload_file(files))
     if not image.isOk:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=image.result)
@@ -51,7 +50,7 @@ async def cont_upload_files(files: List[UploadFile] = File(...)):
 
 @router.post("/upload-file")
 async def cont_upload_file(file: UploadFile = File(...)):
-    image = (await upload_file(file))
+    image = (await image_uploader.upload_file(file))
     if not image.isOk:
         return JSONResponse(status_code=400, content=image.dict())
     return JSONResponse(status_code=200, content=image.dict())
@@ -59,19 +58,19 @@ async def cont_upload_file(file: UploadFile = File(...)):
 
 @router.get('')
 def get_user(db: Session = Depends(db)):
-    return ItemCrud.get_all(db)
+    return crud.ItemCrud.get_all(db)
 
 
 @router.post('')
 def createAccount(request: schemas.Item, db: Session = Depends(db)):
-    return ItemCrud.add(db, models.Item(Name=request.Name))
+    return crud.ItemCrud.add(db, models.Item(Name=request.Name))
 
 
 @router.put('')
 def createAccount(request: schemas.Item, db: Session = Depends(db)):
-    return ItemCrud.update(db, models.Item(**request.dict()))
+    return crud.ItemCrud.update(db, models.Item(**request.dict()))
 
 
 @router.delete('/{id}')
 def createAccount(id: int, db: Session = Depends(db)):
-    return ItemCrud.delete(db, id)
+    return crud.ItemCrud.delete(db, id)
