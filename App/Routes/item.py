@@ -58,7 +58,10 @@ async def cont_upload_file(file: UploadFile = File(...)):
 
 @router.get('')
 def get_user(db: Session = Depends(db)):
-    return crud.ItemCrud.get_all(db)
+    try:
+        return crud.ItemCrud.get_all(db)
+    except BaseException as err:
+        return err
 
 
 @router.post('')
