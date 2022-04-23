@@ -6,7 +6,7 @@ import os
 
 
 engine = create_engine(
-    dotenv_values("pyvenv.cfg")['Db']
+    "mssql+pyodbc://omar:Om123456@92.204.138.94:53956/Fast_Api_Test?driver=SQL+Server"
 )
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False,)
 Base = declarative_base()
