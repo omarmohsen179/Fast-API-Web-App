@@ -13,17 +13,17 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(days=int(dotenv_values(
-            "pyvenv.cfg")['duration-in-days']))
+            "pyvenv.cfg")['durationInDays']))
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, dotenv_values(
-        "pyvenv.cfg")['secret-key'], algorithm=ALGORITHM)
+        "pyvenv.cfg")['secretkey'], algorithm=ALGORITHM)
     return {"token": encoded_jwt, "expire_date": expire}
 
 
 def verify_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, dotenv_values(
-            "pyvenv.cfg")['secret-key'], algorithms=[ALGORITHM])
+            "pyvenv.cfg")['secretkey'], algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         role: str = payload.get("role")
 
