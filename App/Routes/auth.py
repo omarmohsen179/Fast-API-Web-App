@@ -20,7 +20,7 @@ db = get_db
 @router.get('/')
 def get_user(db: Session = Depends(db)):
     json_compatible_item_data = jsonable_encoder(
-        list(map(lambda e: schemas.User(**dict(e.__dict__), Role=e.Roles.Name), UserCrud.get_all(db))))
+        list(map(lambda e: schemas.User(**dict(e.__dict__), Role=e.Roles.Name), crud.UserCrud.get_all(db))))
     # return list(map(getvalue, UserCrud.get_all(db)))
     return JSONResponse(content=json_compatible_item_data)
 
