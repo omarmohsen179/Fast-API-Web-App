@@ -10,14 +10,14 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
 from App.security.Oauth import get_current_user, get_current_admin
-Routerauth = APIRouter(
+router = APIRouter(
     prefix="/auth",
     tags=['auth']
 )
 db = get_db
 
 
-@Routerauth.get('/')
+@router.get('/')
 def get_user(db: Session = Depends(db)):
     json_compatible_item_data = jsonable_encoder(
         list(map(lambda e: schemas.User(**dict(e.__dict__), Role=e.Roles.Name), UserCrud.get_all(db))))
@@ -25,31 +25,31 @@ def get_user(db: Session = Depends(db)):
     return JSONResponse(content=json_compatible_item_data)
 
 
-@Routerauth.post('/create-account')
+@router.post('/create-account')
 def createAccount(request: schemas.CreateAccount, db: Session = Depends(db)):
     return auth.create(request, db)
 
 
-@Routerauth.post('/login')
+@router.post('/login')
 def Login(request: schemas.LoginForm, db: Session = Depends(db)):
     return auth.login(request, db)
 
 
-@Routerauth.get('/admin')
+@router.get('/admin')
 def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(get_current_admin)):
     return "admin"
 
 
-@Routerauth.get('/user')
+@router.get('/user')
 def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(get_current_user)):
     return "user"
 
 
-@Routerauth.delete('/{id}')
+@router.delete('/{id}')
 def createAccount(id: int, db: Session = Depends(db)):
     return crud.UserCrud.delete(db, id)
 
 
-@Routerauth.delete('/all/')
+@router.delete('/all/')
 def createAccount(db: Session = Depends(db)):
     return crud.UserCrud.delete_all(db)
