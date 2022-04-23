@@ -17,9 +17,7 @@ from fastapi.staticfiles import StaticFiles
 # git push --force azurex
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.include_router(auth.router)
-app.include_router(item.router)
-app.include_router(role.router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -27,6 +25,9 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+app.include_router(auth.router)
+app.include_router(item.router)
+app.include_router(role.router)
 
 
 @app.get("/")
