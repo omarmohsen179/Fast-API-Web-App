@@ -15,6 +15,7 @@ from fastapi.staticfiles import StaticFiles
 # python -m pip install --upgrade pip  --force
 # uvicorn App.main:app --reload
 # git push --force azurex
+# git fetch --all
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
