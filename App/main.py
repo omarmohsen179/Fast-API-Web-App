@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
-from App.Routes.auth import *
+from App.auth import *
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -31,7 +31,7 @@ app.add_middleware(
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 2"}
+    return {"running server here we go 4"}
 
 
 client = TestClient(app)
