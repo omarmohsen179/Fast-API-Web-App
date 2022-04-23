@@ -2,7 +2,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from App.routes import auth, item, role
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -14,9 +14,11 @@ from fastapi.staticfiles import StaticFiles
 # python -m pip install --upgrade pip  --force
 # uvicorn main:app --reload
 
-app = FastAPI(title="REST API using FastAPI PostgreSQL Async EndPoints")
+app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
+app.include_router(auth.router)
+app.include_router(item.router)
+app.include_router(role.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,5 +35,21 @@ def root():
     return {"running server here we go"}
 
 
+client = TestClient(app)
+
+
+def initial_data():
+    response = client.post(
+        "/role/list",
+        json=[{"Id": 1, "Name": "User"},
+              {"Id": 2, "Name": "Admin"}
+              ],
+    )
+    # print(response)
+    #assert response.status_code == 200, response.text
+
+
+# initial_data()
 if __name__ == "__main__":
+    app.debug = True
     uvicorn.run(app, host="fag1.azurewebsites.net", port=8232)
