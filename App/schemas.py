@@ -21,6 +21,16 @@ class User(BaseModel):
         orm_mode = True
 
 
+class TemplateBody(BaseModel):
+    buttonText: Optional[str]
+    details: Optional[str]
+    helpLink: Optional[bool]
+    unsubscribeMail: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
 class CreateAccount(BaseModel):
     Username: str
     Email: str
