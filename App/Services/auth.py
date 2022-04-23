@@ -2,9 +2,8 @@ from sqlalchemy.orm import Session
 import App.schemas
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, status, HTTPException
-from App.Security.hashing import Hash
-
-from App.Security import token
+from App.Security.hashing import *
+from App.Security.token import *
 import App.models
 
 
@@ -35,6 +34,6 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
     if not Hash.verify(user.HashedPassword, request.Password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail=f"Incorrect password")
-    access_token: dict = token.create_access_token(
+    access_token: dict = create_access_token(
         data={"sub": user.Username, "role": user.Roles.Name})
     return {**access_token}
