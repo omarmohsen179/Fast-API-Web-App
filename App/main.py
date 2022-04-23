@@ -1,7 +1,6 @@
 
 import uvicorn
 from fastapi import FastAPI
-from App.Services import crud
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
 from App.Routes import auth, item, role
