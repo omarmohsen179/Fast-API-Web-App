@@ -16,7 +16,7 @@ az account set --subscription $SUBSCRIPTION
 # create a resource group for your application
 az group create --name $RESOURCEGROUP --location $LOCATION
 # create an appservice plan (a machine) where your site will run
-az appservice plan create --name $PLANNAME --location $LOCATION --is-linux --sku $PLANSKU --resource-group $RESOURCEGROUP
+#az appservice plan create --name $PLANNAME --location $LOCATION --is-linux --sku $PLANSKU --resource-group $RESOURCEGROUP
 # create the web application on the plan
 # specify the node version your app requires
 az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
@@ -33,8 +33,10 @@ az webapp deployment source config-local-git --name $SITENAME --resource-group $
 
 # the previous command returned the git remote to deploy to
 # use this to set up a new remote named "azure"
- git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
+#git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
 # push master to deploy the site
+git add .
+git commit -m "omar"
 git push azure master
 
 # browse to the site
