@@ -14,7 +14,7 @@ from fastapi.staticfiles import StaticFiles
 # python -m pip install --upgrade pip  --force
 # uvicorn main:app --reload
 
-app = FastAPI()
+app = FastAPI(title="REST API using FastAPI PostgreSQL Async EndPoints")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
