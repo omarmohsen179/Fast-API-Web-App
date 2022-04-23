@@ -2,7 +2,8 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes.auth import routerauth
+from App.schemas import *
+from .routes.auth import *
 from fastapi.testclient import TestClient
 from fastapi.staticfiles import StaticFiles
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -14,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 # python -m pip install --upgrade pip  --force
 # uvicorn main:app --reload
 
-app = FastAPI(debug=False,)
+app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -49,5 +50,5 @@ def initial_data():
 
 # initial_data()
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
