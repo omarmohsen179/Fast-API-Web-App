@@ -33,7 +33,7 @@ app.
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go"}
+    return {"running server here we go ccc"}
 
 
 client = TestClient(app)
