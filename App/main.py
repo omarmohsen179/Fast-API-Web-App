@@ -14,7 +14,7 @@ from fastapi.staticfiles import StaticFiles
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force
 # uvicorn App.main:app --reload
-
+# git push --force origin
 app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(routerauth)
@@ -26,8 +26,6 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
-
-app.
 
 
 @app.get("/")
