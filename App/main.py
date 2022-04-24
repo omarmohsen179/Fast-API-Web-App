@@ -18,7 +18,7 @@ from App.Routes import auth, item, role
 # uvicorn App.main:app --reload
 # git push --force azurex
 # git fetch --all
-app = FastAPI(debug=False)
+app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -39,13 +39,13 @@ app.include_router(role.router)
 @app.get("/db")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 4"}
+    return {"running server here we go 8"}
 
 
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 4"}
+    return {"running server here we go 8"}
 
 
 client = TestClient(app)

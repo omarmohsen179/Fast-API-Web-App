@@ -18,7 +18,7 @@ engine = create_engine(
     # "jdbc:sqlserver://subue1.database.windows.net:1433;database=FastApi2;user=omar@subue1;password=Mrj8P8kSSUGDqNRP1e;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
 )
 SessionLocal = sessionmaker(bind=engine)
-metadata.create_all(engine)
+# metadata.create_all(engine)
 
 
 def get_db():
