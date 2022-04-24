@@ -18,12 +18,11 @@ from App.Routes import auth, item, role
 # uvicorn App.main:app --reload
 # git push --force azurex
 # git fetch --all
-app = FastAPI()
+app = FastAPI(debug=False)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 app.add_middleware(
-
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
@@ -40,13 +39,13 @@ app.include_router(role.router)
 @app.get("/db")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 38x"}
+    return {"running server here we go 8x"}
 
 
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 38x"}
+    return {"running server here we go 8x"}
 
 
 client = TestClient(app)
