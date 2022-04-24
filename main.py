@@ -36,16 +36,10 @@ app.include_router(item.router)
 app.include_router(role.router)
 
 
-@app.get("/db")
-def root():
-    # return RedirectResponse(url="/docs/")
-    return {"running server here we go 1"}
-
-
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 1"}
+    return {"running server here we go 2"}
 
 
 client = TestClient(app)
@@ -62,7 +56,7 @@ def initial_data():
     #assert response.status_code == 200, response.text
 
 
-initial_data()
+# initial_data()
 if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)

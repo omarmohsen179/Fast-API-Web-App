@@ -19,11 +19,6 @@ connection = 'Driver={ODBC Driver 17 for SQL Server};Server=tcp:subue1.database.
 params = urllib.parse.quote_plus(connection)
 pyodbc_connection = pyodbc.connect(connection)
 cursor = pyodbc_connection.cursor()
-cursor.execute("SELECT @@version;")
-row = cursor.fetchone()
-while row:
-    print(row[0])
-    row = cursor.fetchone()
 engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
 SessionLocal = sessionmaker(bind=engine)
 metadata.create_all(engine)
