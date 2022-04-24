@@ -62,7 +62,7 @@ def initial_data():
     #assert response.status_code == 200, response.text
 
 
-# initial_data()
+initial_data()
 if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
