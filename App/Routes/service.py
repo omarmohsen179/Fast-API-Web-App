@@ -1,4 +1,5 @@
 
+from logging import exception
 from sqlalchemy.orm import Session
 from fastapi import APIRouter,  BackgroundTasks,  Depends, status, Body, UploadFile, File, HTTPException
 from typing import List
@@ -6,13 +7,13 @@ from App.database import get_db
 from starlette.responses import JSONResponse
 from App import schemas, models
 from App.Services import crud, image_uploader
-from App.security.Oauth import get_current_user
+from App.Security.Oauth import get_current_user
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from pydantic import EmailStr, BaseModel
 from App.Services.send_mail import *
 router = APIRouter(
-    prefix="/item",
-    tags=['item']
+    prefix="/service",
+    tags=['service']
 )
 db = get_db
 
@@ -54,26 +55,3 @@ async def cont_upload_file(file: UploadFile = File(...)):
     if not image.isOk:
         return JSONResponse(status_code=400, content=image.dict())
     return JSONResponse(status_code=200, content=image.dict())
-
-
-@router.get('')
-def get_user(db: Session = Depends(db)):
-    try:
-        return crud.ItemCrud.get_all(db)
-    except BaseException as err:
-        return err.args
-
-
-@router.post('')
-def createAccount(request: schemas.Item, db: Session = Depends(db)):
-    return crud.ItemCrud.add(db, models.Item(Name=request.Name))
-
-
-@router.put('')
-def createAccount(request: schemas.Item, db: Session = Depends(db)):
-    return crud.ItemCrud.update(db, models.Item(**request.dict()))
-
-
-@router.delete('/{id}')
-def createAccount(id: int, db: Session = Depends(db)):
-    return crud.ItemCrud.delete(db, id)

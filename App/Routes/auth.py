@@ -9,7 +9,7 @@ from App.Services import crud, auth
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
-from App.security.Oauth import get_current_user, get_current_admin
+from App.Security.Oauth import get_current_user, get_current_admin
 router = APIRouter(
     prefix="/auth",
     tags=['auth']

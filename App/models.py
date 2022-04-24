@@ -15,7 +15,6 @@ class User(Base):
     IsActive = Column(Boolean, default=True)
     RoleId = Column(Integer, ForeignKey("Roles.Id"))
     Roles = relationship("Role", back_populates="Users")
-    
 
 
 class Role(Base):
@@ -23,10 +22,4 @@ class Role(Base):
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     Name = Column(String(255), nullable=False)
     Users = relationship("User", back_populates="Roles")
-
-
-class Item(Base):
-    __tablename__ = "Item"
-    Id = Column(Integer, primary_key=True, index=True, nullable=False)
-    Name = Column(String(255))
     # items = relationship("Item", back_populates="owner")\

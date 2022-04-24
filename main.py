@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
 from fastapi.middleware.gzip import GZipMiddleware
 
-from App.Routes import auth, item, role
+from App.Routes import auth, service, role
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
@@ -33,7 +33,7 @@ app.add_middleware(
 
 app.add_middleware(GZipMiddleware)
 app.include_router(auth.router)
-app.include_router(item.router)
+app.include_router(service.router)
 app.include_router(role.router)
 
 
