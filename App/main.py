@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
 from fastapi.middleware.gzip import GZipMiddleware
-from App.database import *
+
 from App.Routes import auth, item, role
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
