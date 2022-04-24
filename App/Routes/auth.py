@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from App.database import get_db
 from App import schemas
-from App.services import crud, auth
+from App.Services import crud, auth
 
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel

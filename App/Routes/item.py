@@ -5,11 +5,11 @@ from typing import List
 from App.database import get_db
 from starlette.responses import JSONResponse
 from App import schemas, models
-from App.services import crud, image_uploader
+from App.Services import crud, image_uploader
 from App.security.Oauth import get_current_user
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from pydantic import EmailStr, BaseModel
-from App.services.send_mail import *
+from App.Services.send_mail import *
 router = APIRouter(
     prefix="/item",
     tags=['item']

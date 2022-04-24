@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from App.database import get_db
 from App import schemas, models
-from App.services import crud
+from App.Services import crud
 router = APIRouter(
     prefix="/role",
     tags=['role']
