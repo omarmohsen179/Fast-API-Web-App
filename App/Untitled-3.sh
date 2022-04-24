@@ -33,7 +33,7 @@ az webapp deployment user set --user-name $USERNAME --password $PASSWORD
 
 # the previous command returned the git remote to deploy to
 # use this to set up a new remote named "azure"
-git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/home/$SITENAME.git"
+git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
 #push master to deploy the site
 git push azure master
 
