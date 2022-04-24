@@ -39,13 +39,13 @@ app.include_router(role.router)
 @app.get("/db")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 8fffx"}
+    return {"running server here we go 1"}
 
 
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 8dddx"}
+    return {"running server here we go 1"}
 
 
 client = TestClient(app)
