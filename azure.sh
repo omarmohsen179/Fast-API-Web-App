@@ -18,8 +18,8 @@ az account set --subscription $SUBSCRIPTION
 
 # To set up deployment from a local git repository, uncomment the following commands.
 # first, set the username and password (use environment variables!)
-USERNAME=""
-PASSWORD=""
+USERNAME="omarmohsen179"
+PASSWORD="Thanks010066@"
 # az webapp deployment user set --user-name $USERNAME --password $PASSWORD
 
 # now, configure the site for deployment. in this case, we will deploy from the local git repository
@@ -30,6 +30,8 @@ PASSWORD=""
 # use this to set up a new remote named "azure"
 git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
 # push master to deploy the site
+git add .
+git commit -m "omar"
 git push azure master
 
 # browse to the site
