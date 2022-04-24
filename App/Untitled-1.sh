@@ -1,7 +1,7 @@
 SUBSCRIPTION="Azure subscription 1"
 RESOURCEGROUP="test4App"
 LOCATION="centralus"
-PLANNAME="ASP-test4App-a6aa"
+PLANNAME="ASP-test4App-a5aa"
 PLANSKU="P1v2"
 SITENAME="FAG1"
 RUNTIME="PYTHON|3.9"
@@ -16,10 +16,10 @@ az account set --subscription $SUBSCRIPTION
 # create a resource group for your application
 az group create --name $RESOURCEGROUP --location $LOCATION
 # create an appservice plan (a machine) where your site will run
-az appservice plan create --name $PLANNAME --location $LOCATION --is-linux --sku $PLANSKU --resource-group $RESOURCEGROUP
+#az appservice plan create --name $PLANNAME --location $LOCATION --is-linux --sku $PLANSKU --resource-group $RESOURCEGROUP
 # create the web application on the plan
 # specify the node version your app requires
-az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
+#az webapp create --name $SITENAME --plan $PLANNAME --runtime $RUNTIME --resource-group $RESOURCEGROUP
 
 # To set up deployment from a local git repository, uncomment the following commands.
 # first, set the username and password (use environment variables!)
@@ -33,9 +33,9 @@ az webapp deployment source config-local-git --name $SITENAME --resource-group $
 
 # the previous command returned the git remote to deploy to
 # use this to set up a new remote named "azure"
-git remote add azure "https://omarmohsen179@FAG1.scm.azurewebsites.net/FAG1.git"
+git remote add azure2 "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
 # push master to deploy the site
-git push azure master
+git push azure2 master
 
 # browse to the site
 az webapp browse --name $SITENAME --resource-group $RESOURCEGROUP
