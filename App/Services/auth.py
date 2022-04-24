@@ -2,9 +2,8 @@ from sqlalchemy.orm import Session
 import App.schemas
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, status, HTTPException
-from App.Security import hashing
-from App.Security import token
-import App.models
+from App.Security import hashing, token
+from App.models import User
 
 
 def create(request: App.schemas.CreateAccount, db: Session):
@@ -12,7 +11,7 @@ def create(request: App.schemas.CreateAccount, db: Session):
     try:
         password = hashing.Hash.bcrypt(request.Password)
         del request.Password
-        new_user = App.models.User(**request.dict(), HashedPassword=password)
+        new_user = User(**request.dict(), HashedPassword=password)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
@@ -25,8 +24,8 @@ def create(request: App.schemas.CreateAccount, db: Session):
 
 
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(App.database.get_db)):
-    user = db.query(App.models.User).filter(
-        App.models.User.Username == request.Username).first()
+    user = db.query(User).filter(
+        User.Username == request.Username).first()
 
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
