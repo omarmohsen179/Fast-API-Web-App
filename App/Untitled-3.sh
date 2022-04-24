@@ -8,9 +8,7 @@ RUNTIME="PYTHON|3.9"
 
 # login supports device login, username/password, and service principals
 # see https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest#az_login
-az login
-# list all of the available subscriptions
-az account list -o table
+
 # set the default subscription for subsequent operations
 #az account set --subscription $SUBSCRIPTION
 # create a resource group for your application
