@@ -1,8 +1,8 @@
 """create account table
 
-Revision ID: 4ad7ce46d6f0
+Revision ID: 3f19410e4003
 Revises: 
-Create Date: 2022-04-23 19:34:40.348867
+Create Date: 2022-04-24 13:06:14.118638
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import mssql
 
 # revision identifiers, used by Alembic.
-revision = '4ad7ce46d6f0'
+revision = '3f19410e4003'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -55,7 +55,7 @@ def downgrade():
     sa.Column('id', sa.INTEGER(), sa.Identity(always=False, start=1, increment=1), autoincrement=True, nullable=False),
     sa.Column('text', sa.VARCHAR(collation='SQL_Latin1_General_CP1_CI_AS'), autoincrement=False, nullable=True),
     sa.Column('completed', mssql.BIT(), autoincrement=False, nullable=True),
-    sa.PrimaryKeyConstraint('id', name='PK__notes__3213E83FE31384E3')
+    sa.PrimaryKeyConstraint('id', name='PK__notes__3213E83FB374A3C4')
     )
     op.drop_index(op.f('ix_Appuser_Username'), table_name='Appuser')
     op.drop_index(op.f('ix_Appuser_Id'), table_name='Appuser')

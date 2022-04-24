@@ -14,7 +14,7 @@ notes = Table(
     Column("completed", Boolean),
 )
 
-connection = 'Driver={ODBC Driver 17 for SQL Server};Server=tcp:subue1.database.windows.net, 1433;Database=FastApi2;Uid=omar;Pwd=Mrj8P8kSSUGDqNRP1e'
+connection = 'Driver={ODBC Driver 17 for SQL Server};Server=tcp:test-server-apps.database.windows.net,1433;Database=ecommercy-web;Uid=admin_omar;Pwd=Asas1212$'
 
 params = urllib.parse.quote_plus(connection)
 pyodbc_connection = pyodbc.connect(connection)
