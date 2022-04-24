@@ -9,7 +9,7 @@ from App.Services import crud, auth
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
-from App.Security.Oauth import get_current_user, get_current_admin
+from App.security import Oauth
 router = APIRouter(
     prefix="/auth",
     tags=['auth']
@@ -36,12 +36,12 @@ def Login(request: schemas.LoginForm, db: Session = Depends(db)):
 
 
 @router.get('/admin')
-def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(get_current_admin)):
+def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(Oauth.get_current_admin)):
     return "admin"
 
 
 @router.get('/user')
-def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(get_current_user)):
+def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(Oauth.get_current_user)):
     return "user"
 
 

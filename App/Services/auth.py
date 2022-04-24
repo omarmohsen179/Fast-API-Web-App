@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 import App.schemas
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, status, HTTPException
-from App.Security import hashing, token
+from App.security import hashing, token
 from App.models import User
 
 
