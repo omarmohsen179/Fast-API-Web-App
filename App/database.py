@@ -1,8 +1,6 @@
 from sqlalchemy import create_engine, MetaData, Column, Integer, String, Boolean, Table
 from sqlalchemy.orm import declarative_base, sessionmaker
 #from dotenv import dotenv_values
-import urllib
-
 Base = declarative_base()
 metadata = MetaData()
 
