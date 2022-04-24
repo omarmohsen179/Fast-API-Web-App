@@ -13,9 +13,9 @@ notes = Table(
     Column("completed", Boolean),
 )
 
-cnxn = pyodbc.connect(
-    "Driver={ODBC Driver 13 for SQL Server};Server=tcp:subue1.database.windows.net,1433;Database=FastApi2;Uid=omar;Pwd=Mrj8P8kSSUGDqNRP1e;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
-cursor = cnxn.cursor()
+# cnxn = pyodbc.connect(
+#   "Driver={ODBC Driver 13 for SQL Server};Server=tcp:subue1.database.windows.net,1433;Database=FastApi2;Uid=omar;Pwd=Mrj8P8kSSUGDqNRP1e;Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;")
+#cursor = cnxn.cursor()
 engine = create_engine(
     "mssql+pyodbc://omar:Mrj8P8kSSUGDqNRP1e@subue1.database.windows.net:1433/FastApi2?driver=SQL+Server"
     # "jdbc:sqlserver://subue1.database.windows.net:1433;database=FastApi2;user=omar@subue1;password=Mrj8P8kSSUGDqNRP1e;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
