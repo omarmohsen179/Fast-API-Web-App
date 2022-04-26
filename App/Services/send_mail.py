@@ -1,7 +1,7 @@
 import os
 from fastapi import BackgroundTasks
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
-
+from App import schemas
 from dotenv import load_dotenv
 
 
@@ -34,7 +34,7 @@ conf = ConnectionConfig(
 )
 
 
-async def send_email_async(subject: str, email_to: str, body: dict):
+async def send_email_async(subject: str, email_to: str, body: schemas.TemplateBody):
     message = MessageSchema(
         subject=subject,
         recipients=email_to,
@@ -47,7 +47,7 @@ async def send_email_async(subject: str, email_to: str, body: dict):
     await fm.send_message(message, template_name='email.html')
 
 
-def send_email_background(background_tasks: BackgroundTasks, subject: str, email_to: str, body: dict):
+def send_email_background(background_tasks: BackgroundTasks, subject: str, email_to: str, body: TemplateBody):
     message = MessageSchema(
         subject=subject,
         recipients=[email_to],

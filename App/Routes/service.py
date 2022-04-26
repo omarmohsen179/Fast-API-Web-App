@@ -1,13 +1,10 @@
 
-from logging import exception
-from sqlalchemy.orm import Session
-from fastapi import APIRouter,  BackgroundTasks,  Depends, status, Body, UploadFile, File, HTTPException
+from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 from typing import List
 from App.database import get_db
 from starlette.responses import JSONResponse
-from App import schemas, models
-from App.Services import crud, image_uploader
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
+from App import schemas
+from App.Services import image_uploader
 from pydantic import EmailStr, BaseModel
 from App.Services.send_mail import *
 router = APIRouter(
@@ -21,13 +18,15 @@ class EmailSchema(BaseModel):
     email: List[EmailStr]
 
 
-@router.get('/send-email/asynchronous')
-async def send_email_asynchronous():
-    await send_email_async('Hello World', ['Mohamedkoriam9999@gmail.com', "mohsenomar350@gmail.com"], {
-        'title': 'Hello World hi thier',
-        'name': 'John Doe hi thier'
-    })
-    return 'Success Mohamedkoriam9999@gmail.com'
+@router.get('/send-email/confirm')
+async def send_email_asynchronous(body:schemas.TemplateBody):
+    body.buttonText="confirm"
+    body.details="thanks for creating account. we hope you take good experiance with us"
+    body.helpLink="support.com"
+    body.unsubscribeMail="unsupport.com"
+
+    await send_email_async('Hello World', ['mohsenomar350@gmail.com', "mohsenomar350@gmail.com"], body)
+    return 'Success'
 
 
 @router.get('/send-email/backgroundtasks')
