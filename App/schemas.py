@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import validator, BaseModel
 
 
 class Role(BaseModel):
@@ -21,6 +21,16 @@ class User(BaseModel):
         orm_mode = True
 
 
+class TemplateBody(BaseModel):
+    buttonText: Optional[str]
+    details: Optional[str]
+    helpLink: Optional[bool]
+    unsubscribeMail: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
 class CreateAccount(BaseModel):
     Username: str
     Email: str
@@ -28,6 +38,17 @@ class CreateAccount(BaseModel):
     ProfileImage: Optional[str]
     Password: str
     RoleId: int
+
+    @validator('Username')
+    def username_alphanumeric(cls, v):
+        assert v.isalnum(), 'must be alphanumeric'
+        return v
+
+    @validator("PhoneNumber")
+    def phone_length(cls, v):
+        if len(str(v)) != 10:
+            raise ValueError("Phone number must be of ten digits")
+        return v
 
     class Config:
         orm_mode = True
@@ -73,6 +94,11 @@ class Login(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class ImageResponse(BaseModel):
+    isOk: bool
+    result: object
 
 
 class TokenData(BaseModel):

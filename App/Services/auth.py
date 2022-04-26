@@ -1,19 +1,17 @@
 from sqlalchemy.orm import Session
 import App.schemas
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi import APIRouter, Depends, status, HTTPException
-from App.security.hashing import Hash
-
-from App.security import token
-import App.models
+from fastapi import Depends, status, HTTPException
+from App.security import hashing, token
+from App.models import User
 
 
 def create(request: App.schemas.CreateAccount, db: Session):
 
     try:
-        password = Hash.bcrypt(request.Password)
+        password = hashing.Hash.bcrypt(request.Password)
         del request.Password
-        new_user = App.models.User(**request.dict(), HashedPassword=password)
+        new_user = User(**request.dict(), HashedPassword=password)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
@@ -26,16 +24,15 @@ def create(request: App.schemas.CreateAccount, db: Session):
 
 
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(App.database.get_db)):
-    user = db.query(App.models.User).filter(
-        App.models.User.Username == request.Username).first()
+    user = db.query(User).filter(
+        User.Username == request.Username).first()
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail=f"Invalid Credentials")
-    if not Hash.verify(user.HashedPassword, request.Password):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+    if not hashing.Hash.verify(user.HashedPassword, request.Password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail=f"Incorrect password")
-
-    access_token = token.create_access_token(
+    access_token: dict = token.create_access_token(
         data={"sub": user.Username, "role": user.Roles.Name})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {**access_token}

@@ -1,12 +1,19 @@
-from sqlalchemy import create_engine
+import pyodbc
+from sqlalchemy import create_engine, MetaData, Column, Integer, String, Boolean, Table
 from sqlalchemy.orm import declarative_base, sessionmaker
-from dotenv import dotenv_values
-
-engine = create_engine(
-    dotenv_values("pyvenv.cfg")['Db']
-)
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False,)
+import urllib
+#from dotenv import dotenv_values
 Base = declarative_base()
+metadata = MetaData()
+
+connection = 'Driver={ODBC Driver 17 for SQL Server};Server=tcp:test-server-apps.database.windows.net,1433;Database=ecommercy-web;Uid=admin_omar;Pwd=Asas1212$'
+
+params = urllib.parse.quote_plus(connection)
+pyodbc_connection = pyodbc.connect(connection)
+cursor = pyodbc_connection.cursor()
+engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
+SessionLocal = sessionmaker(bind=engine)
+# metadata.create_all(engine)
 
 
 def get_db():

@@ -1,25 +1,27 @@
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.testclient import TestClient
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from App.Routes import auth, item, role
-from fastapi.testclient import TestClient
-from fastapi.staticfiles import StaticFiles
+from App.schemas import *
+from fastapi.middleware.gzip import GZipMiddleware
+
+from App.Routes import auth, service, role
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
 # pip freeze > requirements.txt
-# uvicorn main:app --reload
 # Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted powershell
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force
-# uvicorn main:app --reload
-
-app = FastAPI()
+# uvicorn App.main:app --reload
+# git push --force azurex
+# git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
+# git fetch --all
+app = FastAPI(debug=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.include_router(auth.router)
-app.include_router(item.router)
-app.include_router(role.router)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,11 +31,16 @@ app.add_middleware(
     allow_credentials=True,
 )
 
+app.add_middleware(GZipMiddleware)
+app.include_router(auth.router)
+app.include_router(service.router)
+app.include_router(role.router)
+
 
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server"}
+    return {"running server here we go 4"}
 
 
 client = TestClient(app)
@@ -52,5 +59,5 @@ def initial_data():
 
 # initial_data()
 if __name__ == "__main__":
-    app.debug = True
-    uvicorn.run(app, host="localhost", port=8001)
+    app.debug = False
+    uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
