@@ -15,19 +15,13 @@ router = APIRouter(
 )
 db = get_db
 
-DESTINATION = "D:/Code/python/Fast-API-Web-App/"
-CHUNK_SIZE = 2 ** 20
-
-
 async def chunked_copy(src, dst):
     await src.seek(0)
     with open(dst, "wb") as buffer:
         while True:
-            contents = await src.read(CHUNK_SIZE)
+            contents = await src.read(2 ** 20)
             if not contents:
-
                 break
-
             buffer.write(contents)
 
 
@@ -44,7 +38,7 @@ async def create_upload_files(files: List[UploadFile] = File(...)):
 
 @router.post("/upload-file")
 async def create_upload_file(file: UploadFile = File(...)):
-    fullpath = os.path.join(DESTINATION, file.filename)
+    fullpath = os.path.join("D:/Code/python/Fast-API-Web-App/", file.filename)
     await chunked_copy(file, fullpath)
     return {"File saved to disk at": fullpath}
 
