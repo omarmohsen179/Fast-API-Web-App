@@ -43,22 +43,6 @@ def root():
     # return RedirectResponse(url="/docs/")
     return {"running server here we go 4"}
 
-
-client = TestClient(app)
-
-
-def initial_data():
-    response = client.post(
-        "/role/list",
-        json=[{"Id": 1, "Name": "User"},
-              {"Id": 2, "Name": "Admin"}
-              ],
-    )
-    # print(response)
-    #assert response.status_code == 200, response.text
-
-
-# initial_data()
 if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)

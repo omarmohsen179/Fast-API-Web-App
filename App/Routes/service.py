@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 from typing import List
-from App.database import get_db
+from App.Services.db import db
 from starlette.responses import JSONResponse
 from App import schemas
 from App.Services import image_uploader
@@ -11,7 +11,7 @@ router = APIRouter(
     prefix="/service",
     tags=['service']
 )
-db = get_db
+
 
 
 class EmailSchema(BaseModel):
@@ -22,10 +22,7 @@ class EmailSchema(BaseModel):
 async def send_email_asynchronous(body:schemas.TemplateBody):
     body.buttonText="confirm"
     body.details="thanks for creating account. we hope you take good experiance with us"
-    body.helpLink="support.com"
-    body.unsubscribeMail="unsupport.com"
-
-    await send_email_async('Hello World', ['mohsenomar350@gmail.com', "mohsenomar350@gmail.com"], body)
+    await send_email_async('Hello World', [ "mohsenomar350@gmail.com"], body)
     return 'Success'
 
 

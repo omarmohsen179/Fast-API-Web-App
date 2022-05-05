@@ -1,21 +1,36 @@
-from typing import List, Optional
+from typing import List, Optional,Any
 
-from pydantic import validator, BaseModel
+from pydantic import validator, BaseModel,EmailStr
 
 
 class Role(BaseModel):
     Id: int
     Name: str
+    class Config:
+        orm_mode = True
 
-
+class UserRole(BaseModel):
+    role: Role
+    class Config:
+        orm_mode = True
 class User(BaseModel):
     Id: int
-    Username: Optional[str]
-    Email: Optional[str]
+    Username:str
+    Email:EmailStr
     PhoneNumber: Optional[str]
     ProfileImage: Optional[str]
     IsActive: Optional[bool]
-    Role: Optional[str]
+    roles:List[UserRole]
+    def dict(self, **kwargs):
+        data = super(User, self).dict(**kwargs)
+      
+        for a in data['roles']:
+            #a['Id'] = a['role']['Id']
+            #a['Name'] = a['role']['Name']
+            a['Name']= a['role']['Name']
+            del a['role']
+
+        return data
 
     class Config:
         orm_mode = True
@@ -26,10 +41,14 @@ class TemplateBody(BaseModel):
     details: Optional[str]
     helpLink: Optional[bool]
     unsubscribeMail: Optional[str]
-
+    buttonLink:Optional[str]
     class Config:
         orm_mode = True
-
+class reset_password(BaseModel):
+    newPassword: Optional[str]
+    id:Optional[str]
+    class Config:
+        orm_mode = True
 
 class CreateAccount(BaseModel):
     Username: str
@@ -37,8 +56,7 @@ class CreateAccount(BaseModel):
     PhoneNumber:  Optional[str]
     ProfileImage: Optional[str]
     Password: str
-    RoleId: int
-
+    Roles: List[int]
     @validator('Username')
     def username_alphanumeric(cls, v):
         assert v.isalnum(), 'must be alphanumeric'

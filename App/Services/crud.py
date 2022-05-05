@@ -14,7 +14,8 @@ ModelType = TypeVar("ModelType", bound=base.Base)
 class crud(Generic[ModelType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
-
+    def get(self, db: Session):
+        return db.query(self.model)
     def get_pagenation(self, db: Session, skip: int = 0, limit: int = 100):
         return (
             db.query(self.model)

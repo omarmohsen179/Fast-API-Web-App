@@ -34,3 +34,17 @@ def verify_token(token: str, credentials_exception):
         return token_data
     except JWTError:
         raise credentials_exception
+def decrypt(token: str, credentials_exception):
+    try:
+        payload = jwt.decode(token, dotenv_values(
+            "pyvenv.cfg")['secretkey'], algorithms=[ALGORITHM])
+        return payload  
+    except JWTError:
+        raise credentials_exception
+def encrypt(token: str, credentials_exception):
+    try:
+        payload = jwt.encode(token, dotenv_values(
+            "pyvenv.cfg")['secretkey'], algorithms=[ALGORITHM])
+        return payload  
+    except JWTError:
+        raise credentials_exception

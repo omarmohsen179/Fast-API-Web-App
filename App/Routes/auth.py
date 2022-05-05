@@ -1,28 +1,38 @@
 
+from pyexpat import model
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from App.database import get_db
-from App import schemas
+from App.Services.db import db
+from App import schemas,models
 from App.Services import crud, auth
-
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from fastapi.encoders import jsonable_encoder
+from sqlalchemy.orm import  joinedload
 from App.security import Oauth
+
 router = APIRouter(
     prefix="/auth",
     tags=['auth']
 )
-db = get_db
 
 
-@router.get('/')
-def get_user(db: Session = Depends(db)):
-    json_compatible_item_data = jsonable_encoder(
-        list(map(lambda e: schemas.User(**dict(e.__dict__), Role=e.Roles.Name), crud.UserCrud.get_all(db))))
+
+@router.get('/'
+)
+async def get_user(db: Session = Depends(db)):
+    json_compatible_item_data =  db.query(models.User).options(joinedload(models.User.roles)).all()
+    #json_compatible_item_data=list(map(lambda e: schemas.User(**dict(e.__dict__)),json_compatible_item_data))
+        #list(map(lambda e: schemas.User(**dict(e.__dict__), Role=e.Roles.Name), crud.UserCrud.get_all(db)))
+        
     # return list(map(getvalue, UserCrud.get_all(db)))
-    return JSONResponse(content=json_compatible_item_data)
+    db_books = db.query(models.User).options(
+        joinedload(models.User.roles).options(
+            joinedload(models.UserRole.role)
+        )
+    ).all()
+    
+    cx=  schemas.User(**dict(db_books[0].__dict__))   
+    return cx
+
 
 
 @router.post('/create-account')
@@ -33,10 +43,17 @@ def createAccount(request: schemas.CreateAccount, db: Session = Depends(db)):
 @router.post('/login')
 def Login(request: schemas.LoginForm, db: Session = Depends(db)):
     return auth.login(request, db)
-
-
+@router.post('/reset-password-request/{email}')
+def ResetRequest(email: str, db: Session = Depends(db)):
+    return auth.reset_password_request(email, db)
+@router.post('/reset-password')
+def Reset(email: schemas.reset_password, db: Session = Depends(db)):
+    return auth.reset_password(email, db)
+@router.post('/confirm/{id}')
+def ResetRequest(id: int,  db: Session = Depends(db)):
+    return auth.confirm(id, db)
 @router.get('/admin')
-def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(Oauth.get_current_admin)):
+def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(lambda e:Oauth.get_current_admin(e))):
     return "admin"
 
 

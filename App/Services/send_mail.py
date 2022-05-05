@@ -35,6 +35,9 @@ conf = ConnectionConfig(
 
 
 async def send_email_async(subject: str, email_to: str, body: schemas.TemplateBody):
+
+    body.helpLink="support.com"
+    body.unsubscribeMail="unsupport.com"
     message = MessageSchema(
         subject=subject,
         recipients=email_to,
@@ -47,7 +50,7 @@ async def send_email_async(subject: str, email_to: str, body: schemas.TemplateBo
     await fm.send_message(message, template_name='email.html')
 
 
-def send_email_background(background_tasks: BackgroundTasks, subject: str, email_to: str, body: TemplateBody):
+def send_email_background(background_tasks: BackgroundTasks, subject: str, email_to: str, body: schemas.TemplateBody):
     message = MessageSchema(
         subject=subject,
         recipients=[email_to],
