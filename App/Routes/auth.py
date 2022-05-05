@@ -1,6 +1,4 @@
 
-from pyexpat import model
-from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from App.Services.db import db
@@ -19,19 +17,12 @@ router = APIRouter(
 @router.get('/'
 )
 async def get_user(db: Session = Depends(db)):
-    json_compatible_item_data =  db.query(models.User).options(joinedload(models.User.roles)).all()
-    #json_compatible_item_data=list(map(lambda e: schemas.User(**dict(e.__dict__)),json_compatible_item_data))
-        #list(map(lambda e: schemas.User(**dict(e.__dict__), Role=e.Roles.Name), crud.UserCrud.get_all(db)))
-        
-    # return list(map(getvalue, UserCrud.get_all(db)))
     db_books = db.query(models.User).options(
         joinedload(models.User.roles).options(
             joinedload(models.UserRole.role)
         )
-    ).all()
-    
-    cx=  schemas.User(**dict(db_books[0].__dict__))   
-    return cx
+    ).all() 
+    return db_books
 
 
 

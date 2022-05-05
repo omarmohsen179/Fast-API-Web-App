@@ -2,12 +2,11 @@ import pyodbc
 from sqlalchemy import create_engine, MetaData, Column, Integer, String, Boolean, Table
 from sqlalchemy.orm import declarative_base, sessionmaker,Session
 import urllib
-
+from dotenv import dotenv_values
 #from dotenv import dotenv_values
 
 
-connection = 'Driver={ODBC Driver 17 for SQL Server};Server=tcp:test-server-apps.database.windows.net,1433;Database=ecommercy-web;Uid=admin_omar;Pwd=Asas1212$'
-
+connection = dotenv_values("pyvenv.cfg")['dbmain']
 params = urllib.parse.quote_plus(connection)
 pyodbc_connection = pyodbc.connect(connection)
 cursor = pyodbc_connection.cursor()

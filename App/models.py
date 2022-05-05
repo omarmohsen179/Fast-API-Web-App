@@ -19,6 +19,7 @@ class User(Base):
     Email = Column(String(255), unique=True, index=True, nullable=False)
     HashedPassword = Column(String(255), nullable=False)
     PhoneNumber = Column(String, nullable=True)
+    FullName = Column(String, nullable=True)
     ProfileImage = Column(String, nullable=True)
     IsActive = Column(Boolean, default=False, nullable=False)
     IsConfirmed = Column(Boolean, default=False, nullable=False)
