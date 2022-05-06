@@ -6,7 +6,7 @@ from App import schemas,models
 from App.Services import crud, auth
 from sqlalchemy.orm import  joinedload
 from App.security import Oauth
-
+from fastapi import status, HTTPException
 router = APIRouter(
     prefix="/auth",
     tags=['auth']
@@ -56,8 +56,22 @@ def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(Oauth
 @router.delete('/{id}')
 def createAccount(id: int, db: Session = Depends(db)):
     return crud.UserCrud.delete(db, id)
-
-
+@router.post('/check-email/{email}')
+def check_email(email: str, db: Session = Depends(db)):
+    user_email=crud.UserCrud.get(db).filter(models.User.email == str)
+    if  len(user_email) >0: 
+        return 200
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="email is taken")
+@router.post('/check-email/{username}')
+def check_email(email: str, db: Session = Depends(db)):
+    user_email=crud.UserCrud.get(db).filter(models.User.email == str)
+    if  len(user_email) >0: 
+        return 200
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                                detail="email is taken")
 @router.delete('/all/')
 def createAccount(db: Session = Depends(db)):
     return crud.UserCrud.delete_all(db)

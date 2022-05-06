@@ -4,6 +4,7 @@ from jose.exceptions import JWTError
 from App import schemas
 from dotenv import dotenv_values
 from typing import Optional
+
 ALGORITHM = "HS256"
 
 

@@ -3,7 +3,6 @@ from sqlalchemy import create_engine, MetaData, Column, Integer, String, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker,Session
 import urllib
 from dotenv import dotenv_values
-#from dotenv import dotenv_values
 
 
 connection = dotenv_values("pyvenv.cfg")['dbmain']
