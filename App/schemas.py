@@ -23,12 +23,12 @@ class User(BaseModel):
     roles:List[UserRole]
     def dict(self, **kwargs):
         data = super(User, self).dict(**kwargs)
-      
+        print(data['roles'])
         for a in data['roles']:
             #a['Id'] = a['role']['Id']
             #a['Name'] = a['role']['Name']
             a['Name']= a['role']['Name']
-            del a['role']
+            del a  
 
         return data
 
@@ -52,14 +52,14 @@ class reset_password(BaseModel):
 
 class CreateAccount(BaseModel):
     Username: str
-    Email: str
+    Email: EmailStr
     PhoneNumber:  Optional[str]
     ProfileImage: Optional[str]
     Password: str
-    Roles: List[int]
+    Roles: Optional[List[int]]
     @validator('Username')
     def username_alphanumeric(cls, v):
-        assert v.isalnum(), 'must be alphanumeric'
+        #assert v.isalnum(), 'must be alphanumeric'
         return v
 
     @validator("PhoneNumber")

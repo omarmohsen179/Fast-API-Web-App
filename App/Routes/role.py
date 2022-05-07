@@ -5,7 +5,7 @@ from App.Services.db import db
 from App import schemas, models
 from App.Services import crud
 router = APIRouter(
-    prefix="/role",
+    prefix="/api/role",
     tags=['role']
 )
 

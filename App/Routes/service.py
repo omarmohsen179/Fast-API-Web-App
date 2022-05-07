@@ -8,7 +8,7 @@ from App.Services import image_uploader
 from pydantic import EmailStr, BaseModel
 from App.Services.send_mail import *
 router = APIRouter(
-    prefix="/service",
+    prefix="/api/service",
     tags=['service']
 )
 

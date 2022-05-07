@@ -2,7 +2,7 @@
 from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 from fastapi.encoders import jsonable_encoder
-from App.models import User, Role
+from App.models import User, Role,UserRole
 from App.schemas import Response
 from App.Services import base
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
@@ -74,3 +74,4 @@ class crud(Generic[ModelType]):
 
 UserCrud = crud(User)
 RoleCrud = crud(Role)
+UserRoleCrud = crud(UserRole)

@@ -10,35 +10,42 @@ from fastapi.encoders import jsonable_encoder
 from dotenv import dotenv_values
 import base64
 domain=dotenv_values("pyvenv.cfg")['domain']
-def append_roles(new_user,request):
-    main_roles = [UserRole(userId=new_user.Id,roleId=i)  for i in request.Roles]
+def append_roles(new_user,roles,db):
+    main_roles = [UserRole(userId=new_user.Id,roleId=i)  for i in roles]
     db.add_all(main_roles)
     db.commit()
 
 
 async def create(request: schemas.CreateAccount, db: Session):
-    roles= db.query(Role).where(Role.Id in request.Roles)
-    if len(roles) != len(request.Roles):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+    user_roles = request.Roles
+    roles= db.query(Role)
+    [roles.filter(Role.Id== number) for number in user_roles]
+    if len(roles.all()) != len(user_roles):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"roles errors check roles")
-    try:
+
+    try:  
         password = hashing.Hash.bcrypt(request.Password)
         del request.Password
+        del request.Roles
         new_user = User(**request.dict(), HashedPassword=password,IsConfirmed=False)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        append_roles(new_user,request)
+        append_roles(new_user,user_roles,db)
+        access_token: dict = token.create_access_token(
+        data={"us": new_user.Username})
+  
         await send_email_async('confirmation email', [new_user.Email], 
-            schemas.TemplateBody(details="thanks for creating account. we hope you take good experiance with us",buttonText="confirm",
-            buttonLink=domain+"/"+
-            base64.b64encode(token.encrypt(new_user.Id))
+            schemas.TemplateBody(details="thanks for creating account. we hope you take good experience with us",buttonText="confirm",
+            buttonLink=domain+"/confirm?token="+
+            access_token['token']
             ))
              
-        return schemas.Response(success=True, Data=new_user)
+        return "you have to confirm your mail" 
     except BaseException as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail=f"something went wrong")
+                            detail=err.args)
 
 
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(db)):
@@ -52,7 +59,7 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail=f"Incorrect password")
     access_token: dict = token.create_access_token(
-        data={"sub": user.Username, "role": user.Roles.Name})
+        data={"sub": user.Username, "role": user.roles[0].roleId})
     return {**access_token}
 def confirm(request: str, db: Session = Depends(db)):
     try:
@@ -70,11 +77,12 @@ def confirm(request: str, db: Session = Depends(db)):
                             detail=f"something went wrong")  
 async def reset_password_request(request: str, db: Session = Depends(db)):
     try:
+        tokenx=base64.b64encode(token.encrypt(object.Id))
         object:User=db.query(User).filter(
         User.Email == request).first()
         await send_email_async('confirmation email', [object.Email], 
             schemas.TemplateBody(details="thanks for creating account. we hope you take good experiance with us",buttonText="confirm"
-            ,buttonLink=domain+"/"+token.encrypt(object.Id)
+            ,buttonLink=domain+"/reset-password?t="+tokenx
             ))
         return "Email been send"
     except BaseException as err:

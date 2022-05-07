@@ -6,7 +6,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from App.schemas import *
 from fastapi.middleware.gzip import GZipMiddleware
-
+from App.middlewares.validation_middleware import FieldValidation
+from App.middlewares.db_middleware import DBConnection
+from App.middlewares.db_exceptions import DBException
 from App.Routes import auth, service, role
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
@@ -31,7 +33,9 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
-
+app.add_middleware(DBConnection)
+app.add_middleware(DBException)
+app.add_middleware(FieldValidation)
 app.add_middleware(GZipMiddleware)
 app.include_router(auth.router)
 app.include_router(service.router)
