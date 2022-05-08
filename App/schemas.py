@@ -1,11 +1,16 @@
 from typing import List, Optional,Any
-
+from datetime import datetime, timedelta
 from pydantic import validator, BaseModel,EmailStr
+
 
 
 class Role(BaseModel):
     Id: int
     Name: str
+    class Config:
+        orm_mode = True
+class Token(BaseModel):
+    value: str
     class Config:
         orm_mode = True
 
@@ -46,7 +51,7 @@ class TemplateBody(BaseModel):
         orm_mode = True
 class reset_password(BaseModel):
     newPassword: Optional[str]
-    id:Optional[str]
+    token:Optional[str]
     class Config:
         orm_mode = True
 
@@ -109,9 +114,9 @@ class Login(BaseModel):
     password: str
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
+class ConfirmToken(BaseModel):
+    username: Optional[str] = None
+    expire_date: Optional[str]= None
 
 
 class ImageResponse(BaseModel):
@@ -121,4 +126,6 @@ class ImageResponse(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
-    role: Optional[str] = None
+    role: Optional[List[str]] = None
+    expire_date: Optional[str] = None
+    

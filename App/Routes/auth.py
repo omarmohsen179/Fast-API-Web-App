@@ -42,9 +42,9 @@ def ResetRequest(email: str, db: Session = Depends(db)):
 @router.post('/reset-password')
 def Reset(email: schemas.reset_password, db: Session = Depends(db)):
     return auth.reset_password(email, db)
-@router.post('/confirm/{id}')
-def ResetRequest(id: int,  db: Session = Depends(db)):
-    return auth.confirm(id, db)
+@router.post('/confirm')
+def ResetRequest(token:schemas.Token,  db: Session = Depends(db)):
+    return auth.confirm(token.value, db)
 @router.get('/admin')
 def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(lambda e:Oauth.get_current_admin(e))):
     return "admin"

@@ -22,6 +22,10 @@ from App.Routes import auth, service, role
 # git push --force azurex
 # git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
 # git fetch --all
+
+'''pip uninstall crypto
+pip uninstall pycryptodome
+pip install pycryptodome'''
 app = FastAPI(debug=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
