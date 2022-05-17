@@ -1,9 +1,9 @@
 
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey,REAL
 from App.database import Base,engine
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import Session
-from sqlalchemy.ext.associationproxy import association_proxy
+from  App.security import hashing
 
 class UserRole(Base):
     __tablename__ = "UserRole"  
@@ -18,11 +18,12 @@ class User(Base):
     Username = Column(String(255), unique=True, index=True, nullable=False)
     Email = Column(String(255), unique=True, index=True, nullable=False)
     HashedPassword = Column(String(255), nullable=False)
-    PhoneNumber = Column(String, nullable=True)
-    FullName = Column(String, nullable=True)
-    ProfileImage = Column(String, nullable=True)
-    IsActive = Column(Boolean, default=False, nullable=False)
+    PhoneNumber = Column(String(255), nullable=True)
+    FullName = Column(String(255), nullable=True)
+    ProfileImage = Column(String(255), nullable=True)
+    IsActive = Column(Boolean, default=False, nullable=True)
     IsConfirmed = Column(Boolean, default=False, nullable=False)
+    LastPasswordReset = Column(REAL, nullable=True)
     roles = relationship("UserRole", back_populates="user")
 
 
@@ -33,12 +34,17 @@ class Role(Base):
     users = relationship("UserRole", back_populates="role")
 
 with Session(bind=engine) as session:
-    users = [User(Id=1,Username="User2212ss22",Email="Ema22ssil1222",HashedPassword="dsdsdsddsdsd")]
-    roles = [Role(Id=2,Name="Blogs"),
-             Role(Id=3,Name="Items")]
+    users = [User(Id=1,Username="admin",Email="admin123@gmail.com",HashedPassword=hashing.Hash.bcrypt("admin"))]
+    roles = [Role(Id=1,Name="Blogs"),
+             Role(Id=2,Name="Sale"),
+             Role(Id=3,Name="Web Admin"),
+             Role(Id=4,Name="User Admin"),
+             ]
     user_roles=[UserRole(userId=users[0].Id, roleId=roles[0].Id)
-                ,UserRole(userId=users[0].Id, roleId=roles[1].Id)]
-    #session.add_all(users)
-    #session.add_all(roles)
-    #session.add_all(user_roles)
+                ,UserRole(userId=users[0].Id, roleId=roles[1].Id),
+                UserRole(userId=users[0].Id, roleId=roles[2].Id)
+                ,UserRole(userId=users[0].Id, roleId=roles[3].Id)]
+    session.add_all(users)
+    session.add_all(roles)
+    session.add_all(user_roles)
     #session.commit()

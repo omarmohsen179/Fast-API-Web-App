@@ -18,6 +18,7 @@ def get_user(db: Session = Depends(db)):
 
 @router.post('')
 def add(request: schemas.Role, db: Session = Depends(db)):
+ 
     return crud.RoleCrud.add(db, models.Role(Name=request.Name))
 
 
@@ -29,7 +30,9 @@ def addlist(request: list[schemas.Role], db: Session = Depends(db)):
 
 @router.put('')
 def update(request: schemas.Role, db: Session = Depends(db)):
-    return crud.RoleCrud.update(db, models.Role(**request.dict()))
+   # xx=  crud.RoleCrud.get(db).filter(models.Role.Id == request.Id).first()
+    #xx.Name= request.Name
+    return crud.RoleCrud.update(db,request)
 
 
 @router.delete('/{id}')

@@ -1,6 +1,7 @@
 from typing import List, Optional,Any
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pydantic import validator, BaseModel,EmailStr
+
 
 
 
@@ -15,28 +16,53 @@ class Token(BaseModel):
         orm_mode = True
 
 class UserRole(BaseModel):
-    role: Role
+    role:Optional[Role] 
     class Config:
         orm_mode = True
 class User(BaseModel):
-    Id: int
-    Username:str
-    Email:EmailStr
-    PhoneNumber: Optional[str]
-    ProfileImage: Optional[str]
-    IsActive: Optional[bool]
-    roles:List[UserRole]
+    Id : int
+    Username:  Optional[str]
+    Email :  Optional[str]
+    HashedPassword :  Optional[str]
+    PhoneNumber:  Optional[str]
+    FullName :  Optional[str]
+    ProfileImage :  Optional[str]
+    IsActive :  Optional[bool]
+    IsConfirmed :  Optional[bool]
+    LastPasswordReset :  Optional[Any]
+    roles :  List[UserRole]
     def dict(self, **kwargs):
         data = super(User, self).dict(**kwargs)
         print(data['roles'])
-        for a in data['roles']:
-            #a['Id'] = a['role']['Id']
-            #a['Name'] = a['role']['Name']
-            a['Name']= a['role']['Name']
-            del a  
+        for b in data['roles']:
+            b['Id']=b['role']['Id']
+            b['Name'] = b['role']['Name']
+            del b['role']
 
         return data
+    class Config:
+        orm_mode = True
+class user_confirm(BaseModel):
+    Id : int
+    Username:  Optional[str]
+    Email :  Optional[str]
+    HashedPassword :  Optional[str]
+    PhoneNumber:  Optional[str]
+    FullName :  Optional[str]
+    ProfileImage :  Optional[str]
+    IsActive :  Optional[bool]
+    IsConfirmed :  Optional[bool]
+    LastPasswordReset :  Optional[Any]
+    class Config:
+        orm_mode = True
 
+class UpdateUser(BaseModel):
+    Id : Optional[int]=None
+    Username:  Optional[str]=None
+    Email :  Optional[str]=None
+    PhoneNumber:  Optional[str]=None
+    FullName :  Optional[str]=None
+    ProfileImage :  Optional[str]=None
     class Config:
         orm_mode = True
 
@@ -50,7 +76,7 @@ class TemplateBody(BaseModel):
     class Config:
         orm_mode = True
 class reset_password(BaseModel):
-    newPassword: Optional[str]
+    Password: Optional[str]
     token:Optional[str]
     class Config:
         orm_mode = True
@@ -78,7 +104,7 @@ class CreateAccount(BaseModel):
 
 
 class LoginForm(BaseModel):
-    Username: str
+    UsernameOrEmail: str
     Password: str
 
 
@@ -126,6 +152,6 @@ class ImageResponse(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
-    role: Optional[List[str]] = None
+    role: Optional[List[int]] = None
     expire_date: Optional[str] = None
     

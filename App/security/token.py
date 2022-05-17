@@ -12,53 +12,47 @@ def myconverter(o):
     if isinstance(o, datetime):
         return o.__str__()
 def create_access_token(data: schemas.TokenData):
-    expire = datetime.utcnow() + timedelta(days=int(dotenv_values("pyvenv.cfg")['durationInDays']))
+    expire = (datetime.utcnow() + timedelta(days=int(dotenv_values("pyvenv.cfg")['durationInDays']))).strftime('%d/%m/%y %H:%M:%S')
     data.expire_date=expire
-    encoded_jwt = jwt.encode(data, dotenv_values(
+    encoded_jwt = jwt.encode(data.dict(), dotenv_values(
         "pyvenv.cfg")['secretkey'], algorithm=ALGORITHM)
     return {"token": encoded_jwt, "expire_date": expire}
 
 
 def verify_token(token: str, credentials_exception):
     try:
+        
         payload = jwt.decode(token, dotenv_values(
             "pyvenv.cfg")['secretkey'], algorithms=[ALGORITHM])
+        
         username: str = payload.get("username")
         role: str = payload.get("role")
-
-        print(username)
         if username is None:
             raise credentials_exception
         token_data = schemas.TokenData(username=username, role=role)
         return token_data
     except JWTError:
         raise credentials_exception
-def create_access_token_confirm(data: schemas.ConfirmToken):
-    datex :str=json.dumps(datetime.utcnow() + timedelta(days=int(dotenv_values("pyvenv.cfg")['durationInDays'])), indent=4, sort_keys=True, default=str).replace('"','  ')
-    data.expire_date=datex
-
+def create_access_token_confirm(data: schemas.ConfirmToken,period=(datetime.utcnow() + timedelta(hours=int(dotenv_values("pyvenv.cfg")['durationInDays'])))):
+  
+    data.expire_date=period.strftime('%d/%m/%y %H:%M:%S')
+    print(period) 
     encoded_jwt:str = jwt.encode(data.dict(), dotenv_values(
         "pyvenv.cfg")['secretkey'], algorithm=ALGORITHM)
     return encoded_jwt
-from dateutil.parser import parse
+
 def verify_token_confirm(token: str)-> schemas.ConfirmToken:
     try:
-       
         payload = jwt.decode(token, dotenv_values("pyvenv.cfg")['secretkey'], algorithms=[ALGORITHM])
-        
         payload=schemas.ConfirmToken(**payload)
-        print("------------------")
-        print(payload.expire_date)
-        s = "2016-03-26T09:25:55.000"
-        f = "%Y-%m-%dT%H:%M:%S.%f"
-        "2022-05-22 02:59:05.415203"
-        print(datetime.strptime(s, f))
-        if has_expired(datetime.strptime(payload.expire_date, f)):
-            raise Error("expaired token")
-        print(datetime(payload.expire_date)) 
+        datee :datetime=datetime.strptime(payload.expire_date, '%d/%m/%y %H:%M:%S')
+        payload.expire_date= datee
+        #if has_expired(datee):
+            #raise Error("expaired token")
         return payload
     except JWTError as err:
         raise  
 
 def has_expired(date):
-    return date < datetime.now()
+    timex:float=(date - datetime.now() ).total_seconds()
+    return  timex < 1.0

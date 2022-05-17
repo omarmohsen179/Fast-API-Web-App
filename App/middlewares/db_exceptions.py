@@ -18,7 +18,7 @@ class DBException(BaseHTTPMiddleware):
             request.state.db.close()
             return response
         except SQLAlchemyError as error:
-            print(error)
+            
             #error_json = str(error.__dict__['orig']).split('Key ')[-1]
             #error_json_pt = translator.translate(error_json, dest='pt')
             return Response(

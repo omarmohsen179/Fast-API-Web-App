@@ -1,8 +1,8 @@
 """create account table
 
-Revision ID: 65b45ab14a20
+Revision ID: 2aefa6c30647
 Revises: 
-Create Date: 2022-05-03 19:27:13.049478
+Create Date: 2022-05-14 18:30:29.221672
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '65b45ab14a20'
+revision = '2aefa6c30647'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,10 +23,12 @@ def upgrade():
     sa.Column('Username', sa.String(length=255), nullable=False),
     sa.Column('Email', sa.String(length=255), nullable=False),
     sa.Column('HashedPassword', sa.String(length=255), nullable=False),
-    sa.Column('PhoneNumber', sa.String(), nullable=True),
-    sa.Column('ProfileImage', sa.String(), nullable=True),
-    sa.Column('IsActive', sa.Boolean(), nullable=False),
+    sa.Column('PhoneNumber', sa.String(length=255), nullable=True),
+    sa.Column('FullName', sa.String(length=255), nullable=True),
+    sa.Column('ProfileImage', sa.String(length=255), nullable=True),
+    sa.Column('IsActive', sa.Boolean(), nullable=True),
     sa.Column('IsConfirmed', sa.Boolean(), nullable=False),
+    sa.Column('LastPasswordReset', sa.Date(), nullable=True),
     sa.PrimaryKeyConstraint('Id')
     )
     op.create_index(op.f('ix_Appuser_Email'), 'Appuser', ['Email'], unique=True)

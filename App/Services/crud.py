@@ -30,10 +30,11 @@ class crud(Generic[ModelType]):
 
     def add(self, db: Session, object):
         try:
+
             db.add(object)
             db.commit()
             db.refresh(object)
-            return Response(success=True, Data=object)
+            return object
         except BaseException as err:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                                 detail=Response(success=False, Data=err))
@@ -43,7 +44,7 @@ class crud(Generic[ModelType]):
             db.add_all(object)
             db.commit()
             # db.refresh(object)
-            return Response(success=True, Data=object)
+            return object
         except BaseException as err:
             return str(err)
 
@@ -53,12 +54,12 @@ class crud(Generic[ModelType]):
             del object.Id
             obj_in_data = jsonable_encoder(object)
             db.query(self.model).filter(
-                self.model.Id == id).update(obj_in_data, synchronize_session="fetch")
+                self.model.Id == id).update(obj_in_data)
             db.commit()
-            return Response(success=True, Data=object)
+            object.Id=id
+            return object
         except BaseException as err:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                                detail=Response(success=False, Data=err))
+            return err
 
     def delete(self, db: Session, id: int):
         db.query(self.model).filter(
