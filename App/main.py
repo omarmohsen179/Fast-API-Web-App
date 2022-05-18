@@ -4,7 +4,6 @@ from fastapi.testclient import TestClient
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from App.schemas import *
 from fastapi.middleware.gzip import GZipMiddleware
 from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
@@ -49,8 +48,7 @@ app.include_router(role.router)
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 4"}
-
+    return {"running server here we go"}
 if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)

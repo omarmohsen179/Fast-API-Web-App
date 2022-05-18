@@ -5,21 +5,21 @@ from pydantic import validator, BaseModel,EmailStr
 
 
 
-class Role(BaseModel):
+class role(BaseModel):
     Id: int
     Name: str
     class Config:
         orm_mode = True
-class Token(BaseModel):
+class token(BaseModel):
     value: str
     class Config:
         orm_mode = True
 
-class UserRole(BaseModel):
-    role:Optional[Role] 
+class user_role(BaseModel):
+    role:Optional[role] 
     class Config:
         orm_mode = True
-class User(BaseModel):
+class user(BaseModel):
     Id : int
     Username:  Optional[str]
     Email :  Optional[str]
@@ -30,9 +30,9 @@ class User(BaseModel):
     IsActive :  Optional[bool]
     IsConfirmed :  Optional[bool]
     LastPasswordReset :  Optional[Any]
-    roles :  List[UserRole]
+    roles :  List[user_role]
     def dict(self, **kwargs):
-        data = super(User, self).dict(**kwargs)
+        data = super(user, self).dict(**kwargs)
         print(data['roles'])
         for b in data['roles']:
             b['Id']=b['role']['Id']
@@ -56,7 +56,7 @@ class user_confirm(BaseModel):
     class Config:
         orm_mode = True
 
-class UpdateUser(BaseModel):
+class update_user(BaseModel):
     Id : Optional[int]=None
     Username:  Optional[str]=None
     Email :  Optional[str]=None
@@ -67,7 +67,7 @@ class UpdateUser(BaseModel):
         orm_mode = True
 
 
-class TemplateBody(BaseModel):
+class template_body(BaseModel):
     buttonText: Optional[str]
     details: Optional[str]
     helpLink: Optional[bool]
@@ -81,7 +81,7 @@ class reset_password(BaseModel):
     class Config:
         orm_mode = True
 
-class CreateAccount(BaseModel):
+class create_account(BaseModel):
     Username: str
     Email: EmailStr
     PhoneNumber:  Optional[str]
@@ -103,22 +103,22 @@ class CreateAccount(BaseModel):
         orm_mode = True
 
 
-class LoginForm(BaseModel):
+class login_form(BaseModel):
     UsernameOrEmail: str
     Password: str
 
 
-class Item(BaseModel):
+class item(BaseModel):
     Id: int
     Name: str
 
 
-class Response(BaseModel):
+class response(BaseModel):
     success: bool
     Data: object
 
 
-class ShowUser(BaseModel):
+class show_user(BaseModel):
     name: str
     email: str
 
@@ -129,28 +129,28 @@ class ShowUser(BaseModel):
 class ShowBlog(BaseModel):
     title: str
     body: str
-    creator: ShowUser
+    creator: show_user
 
     class Config():
         orm_mode = True
 
 
-class Login(BaseModel):
+class login(BaseModel):
     username: str
     password: str
 
 
-class ConfirmToken(BaseModel):
+class confirm_token(BaseModel):
     username: Optional[str] = None
     expire_date: Optional[str]= None
 
 
-class ImageResponse(BaseModel):
+class image_response(BaseModel):
     isOk: bool
     result: object
 
 
-class TokenData(BaseModel):
+class token_data(BaseModel):
     username: Optional[str] = None
     role: Optional[List[int]] = None
     expire_date: Optional[str] = None

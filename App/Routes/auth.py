@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from App.Services.db import db
-from App import schemas,models
+from App.models import schemas,models
 from App.Services import crud, auth
 from sqlalchemy.orm import  joinedload
 from App.security import Oauth
