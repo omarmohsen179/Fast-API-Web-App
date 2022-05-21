@@ -15,10 +15,10 @@ router = APIRouter(
 
 
 
-@router.get('/', response_model=List[schemas.User])
+@router.get('/', response_model=List[schemas.user])
 async def get_user(db: Session = Depends(db)):
-    db_books:List[schemas.User] = db.query(models.User).options(
-        joinedload(models.User.roles).options(
+    db_books:List[schemas.user] = db.query(models.User).options(
+        joinedload(models.user.roles).options(
             joinedload(models.UserRole.role)
         )
     ).all() 
@@ -27,14 +27,14 @@ async def get_user(db: Session = Depends(db)):
 
 
 @router.post('/create-account')
-async def createAccount(request: schemas.CreateAccount, db: Session = Depends(db)):
+async def createAccount(request: schemas.create_account, db: Session = Depends(db)):
     request.Roles=[1,2]
     create = await auth.create(request, db)
     return create
 
 
 @router.post('/login')
-def Login(request: schemas.LoginForm, db: Session = Depends(db)):
+def Login(request: schemas.login_form, db: Session = Depends(db)):
     return auth.login(request, db)
 @router.post('/reset-password-request/{email}') 
 async def ResetRequest(email: str, db: Session = Depends(db)): 
@@ -43,7 +43,7 @@ async def ResetRequest(email: str, db: Session = Depends(db)):
 def Reset(email: schemas.reset_password, db: Session = Depends(db)):
     return auth.reset_password(email, db)
 @router.post('/confirm')
-def ResetRequest(token:schemas.Token,  db: Session = Depends(db)):
+def ResetRequest(token:schemas.token,  db: Session = Depends(db)):
     try:
         resualt = auth.confirm(token.value, db)
         return resualt
@@ -51,14 +51,14 @@ def ResetRequest(token:schemas.Token,  db: Session = Depends(db)):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=err.args)  
 @router.get('/admin')
-def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(lambda e:Oauth.get_current_admin(e))):
+def Login(db: Session = Depends(db), current_admin: schemas.user = Depends(lambda e:Oauth.get_current_admin(e))):
     return "admin"
 
 @router.put('')
-def update(request: schemas.UpdateUser, db: Session = Depends(db)):
+def update(request: schemas.update_user, db: Session = Depends(db)):
     try :
         resualt=  dict((k, v) for k, v in request.dict().items() if v is not None)  
-        main = dict((k, v) for k, v in (db.query(models.User).filter(models.User.Id ==  request.Id)).__dict__.items() if v is not None  and k not in resualt.keys())
+        main = dict((k, v) for k, v in (db.query(models.user).filter(models.user.Id ==  request.Id)).__dict__.items() if v is not None  and k not in resualt.keys())
         user2= schemas.User(
             **main,**resualt
         )   
@@ -67,7 +67,7 @@ def update(request: schemas.UpdateUser, db: Session = Depends(db)):
     except BaseException as err: 
         return err.args
 @router.get('/user')
-def Login(db: Session = Depends(db), current_admin: schemas.User = Depends(Oauth.get_current_user)):
+def Login(db: Session = Depends(db), current_admin: schemas.user = Depends(Oauth.get_current_user)):
     return "user"
 
 
