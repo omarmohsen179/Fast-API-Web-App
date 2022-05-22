@@ -17,7 +17,7 @@ from App.Routes import auth, service, role
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force
 # python -m ensurepip pip not found
-# uvicorn main:app --reload
+# uvicorn App.main:app --reload
 # git push --force azurex
 # git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
 # git fetch --all

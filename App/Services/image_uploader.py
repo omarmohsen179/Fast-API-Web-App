@@ -5,7 +5,7 @@ from typing import List
 import uuid
 from PIL import Image
 import filetype
-from App.schemas import ImageResponse
+from App.models.schemas import image_response
 
 
 async def chunked_copy(src: UploadFile):
@@ -25,18 +25,18 @@ async def chunked_copy(src: UploadFile):
     return "/static/" + filename
 
 
-async def upload_file(file: UploadFile = File(...)) -> ImageResponse:
+async def upload_file(file: UploadFile = File(...)) -> image_response:
     try:
-        return ImageResponse(isOk=True, result=(await chunked_copy(file)))
+        return image_response(isOk=True, result=(await chunked_copy(file)))
     except Exception as error:
-        return ImageResponse(isOk=False, result=error.args[0])
+        return image_response(isOk=False, result=error.args[0])
 
 
-async def upload_files(files: List[UploadFile] = File(...)) -> ImageResponse:
+async def upload_files(files: List[UploadFile] = File(...)) -> image_response:
     try:
         files = []
         for i in files:
             files.append((await chunked_copy(i)))
-        return ImageResponse(isOk=True, result=files)
+        return image_response(isOk=True, result=files)
     except Exception as error:
-        return ImageResponse(isOk=False, result=error.args[0])
+        return image_response(isOk=False, result=error.args[0])
