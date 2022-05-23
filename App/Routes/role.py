@@ -1,7 +1,7 @@
 
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
-from App.Services.db import db
+from App.database.db import db
 from App.models import schemas, models
 from App.Services import crud
 router = APIRouter(

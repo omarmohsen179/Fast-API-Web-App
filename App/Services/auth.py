@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, status, HTTPException
 from App.security import hashing, token
 from App.models.models import user,role,user_role
-from App.Services.db import db
+from App.database.db import db
 from App.Services.send_mail import send_email_async
 from fastapi.encoders import jsonable_encoder
 from dotenv import dotenv_values

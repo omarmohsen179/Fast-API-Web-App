@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 from typing import List
-from App.Services.db import db
+from App.database.db import db
 from starlette.responses import JSONResponse
 from App.models import schemas
 from App.Services import image_uploader
