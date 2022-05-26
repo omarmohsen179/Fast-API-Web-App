@@ -55,6 +55,16 @@ class item(Base):
     item_images = relationship("item_image", back_populates="item")
     orders = relationship("order_item", back_populates="item")
     wishlist = relationship("wishlist", back_populates="item")
+    item_offers = relationship("offer_item", back_populates="item")
+    keywords = relationship("keyword_item", back_populates="item")
+class offer(Base):   
+    __tablename__ = "offer"
+    Id = Column(Integer, primary_key=True, index=True, nullable=False)
+    original_price =Column(Float, primary_key=True, index=True, nullable=False)
+    current_price =Column(Float, primary_key=True, index=True, nullable=False)
+    discount = Column(Float, primary_key=True, index=True, nullable=False)
+    offers_item = relationship("offer_item", back_populates="offer")
+
 class shop(Base):   
     __tablename__ = "shop"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
