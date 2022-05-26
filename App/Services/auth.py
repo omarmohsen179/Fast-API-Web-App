@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
-from App import schemas
+from App.models import schemas
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import Depends, status, HTTPException
 from App.security import hashing, token
-from App.models import User,Role,UserRole
-from App.Services.db import db
+from App.models.models import user,role,user_role
+from App.database.db import db
 from App.Services.send_mail import send_email_async
 from fastapi.encoders import jsonable_encoder
 from dotenv import dotenv_values
-from App.Services.crud import UserCrud
+from App.Services.crud import user_crud
 from datetime import datetime, timedelta
 from sqlalchemy.orm import  joinedload
 from typing import List, Optional,Any
@@ -17,7 +17,7 @@ from sqlalchemy import or_
 import base64
 domain=dotenv_values("pyvenv.cfg")['domain']
 def append_roles(new_user,roles,db):
-    main_roles = [UserRole(userId=new_user.Id,roleId=i)  for i in roles]
+    main_roles = [user_role(userId=new_user.Id,roleId=i)  for i in roles]
     db.add_all(main_roles)
     db.commit()
 def b64e(s):
@@ -26,18 +26,16 @@ def b64d(s):
     return base64.b64decode(s).decode()
 def datafromate(da):
     return datetime.strptime(da, '%d/%m/%y %H:%M:%S')
-async def create(request: schemas.CreateAccount, db: Session):
+async def create(request: schemas.create_account, db: Session):
     user_roles = request.Roles
-
-    role_result = db.query(Role).filter(Role.Id.in_(request.Roles)).all()
-    print(role_result)
+    role_result = db.query(role).filter(role.Id.in_(request.Roles)).all()
     if len(role_result) != len(user_roles):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"roles errors check roles")
     try:  
         password = hashing.Hash.bcrypt(request.Password)
         del request.Password,request.Roles
-        new_user = User(**request.dict(), HashedPassword=password,IsConfirmed=False)
+        new_user = user(**request.dict(), HashedPassword=password,IsConfirmed=False)
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
@@ -58,9 +56,9 @@ async def create(request: schemas.CreateAccount, db: Session):
 
 def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(db)):
 
-    user: schemas.User= db.query(User).filter(or_(User.Username == request.UsernameOrEmail,User.Email == request.UsernameOrEmail)).options(
-            joinedload(User.roles).options(
-                joinedload(UserRole.role)
+    user: schemas.User= db.query(user).filter(or_(user.Username == request.UsernameOrEmail,user.email == request.UsernameOrEmail)).options(
+            joinedload(user.roles).options(
+                joinedload(user_role.role)
         )
         ).first()
     if not user.Id:
@@ -83,26 +81,26 @@ def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(
 
 def confirm(request: str, db: Session):
         tokenparse:schemas.ConfirmToken = token.verify_token_confirm(b64d(request))
-        object:User=db.query(User).filter(User.Username == tokenparse.username).first()
+        object:user=db.query(user).filter(user.Username == tokenparse.username).first()
         if object.IsConfirmed:
             return "Already Confirmed"
         object.IsConfirmed=True
         user2= schemas.user_confirm(
             **object.__dict__
         )   
-        UserCrud.update(db,user2)
+        user_crud.update(db,user2)
         return "your e-mail been confirmed successfully"
 
 
 async def reset_password_request(request: str, db: Session = Depends(db)):
     try:
-        object:User=db.query(User).filter(
-        User.Email == request).first()
+        object:user=db.query(User).filter(
+        user.Email == request).first()
         tokenx=schemas.ConfirmToken(username=object.Username)
         access_token =str(token.create_access_token_confirm(tokenx,period=datetime.utcnow()))  
        
         await send_email_async('confirmation email', [object.Email], 
-            schemas.TemplateBody(details="thanks for creating account. we hope you take good experiance with us",buttonText="confirm"
+            schemas.template_body(details="thanks for creating account. we hope you take good experiance with us",buttonText="confirm"
             ,buttonLink=domain+"/reset-password?token="+  b64e(access_token)
             ))
         

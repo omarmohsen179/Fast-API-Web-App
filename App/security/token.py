@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from msilib.schema import Error
 from jose import jwt
 from jose.exceptions import JWTError
-from App import schemas
+from App.models import schemas
 from dotenv import dotenv_values
 from typing import Optional
 import   json 
@@ -11,7 +11,7 @@ ALGORITHM = "HS256"
 def myconverter(o):
     if isinstance(o, datetime):
         return o.__str__()
-def create_access_token(data: schemas.TokenData):
+def create_access_token(data: schemas.token_data):
     expire = (datetime.utcnow() + timedelta(days=int(dotenv_values("pyvenv.cfg")['durationInDays']))).strftime('%d/%m/%y %H:%M:%S')
     data.expire_date=expire
     encoded_jwt = jwt.encode(data.dict(), dotenv_values(
@@ -33,7 +33,7 @@ def verify_token(token: str, credentials_exception):
         return token_data
     except JWTError:
         raise credentials_exception
-def create_access_token_confirm(data: schemas.ConfirmToken,period=(datetime.utcnow() + timedelta(hours=int(dotenv_values("pyvenv.cfg")['durationInDays'])))):
+def create_access_token_confirm(data: schemas.confirm_token,period=(datetime.utcnow() + timedelta(hours=int(dotenv_values("pyvenv.cfg")['durationInDays'])))):
   
     data.expire_date=period.strftime('%d/%m/%y %H:%M:%S')
     print(period) 
@@ -41,10 +41,10 @@ def create_access_token_confirm(data: schemas.ConfirmToken,period=(datetime.utcn
         "pyvenv.cfg")['secretkey'], algorithm=ALGORITHM)
     return encoded_jwt
 
-def verify_token_confirm(token: str)-> schemas.ConfirmToken:
+def verify_token_confirm(token: str)-> schemas.confirm_token:
     try:
         payload = jwt.decode(token, dotenv_values("pyvenv.cfg")['secretkey'], algorithms=[ALGORITHM])
-        payload=schemas.ConfirmToken(**payload)
+        payload=schemas.confirm_token(**payload)
         datee :datetime=datetime.strptime(payload.expire_date, '%d/%m/%y %H:%M:%S')
         payload.expire_date= datee
         #if has_expired(datee):

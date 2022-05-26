@@ -1,9 +1,9 @@
 
 from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 from typing import List
-from App.Services.db import db
+from App.database.db import db
 from starlette.responses import JSONResponse
-from App import schemas
+from App.models import schemas
 from App.Services import image_uploader
 from pydantic import EmailStr, BaseModel
 from App.Services.send_mail import *
@@ -19,7 +19,7 @@ class EmailSchema(BaseModel):
 
 
 @router.get('/send-email/confirm')
-async def send_email_asynchronous(body:schemas.TemplateBody):
+async def send_email_asynchronous(body:schemas.template_body):
     body.buttonText="confirm"
     body.details="thanks for creating account. we hope you take good experiance with us"
     await send_email_async('Hello World', [ "mohsenomar350@gmail.com"], body)

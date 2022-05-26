@@ -1,4 +1,4 @@
-#!D:\Code\python\Fast-API-Web-App\Scripts\python.exe
+#!D:\omar\Fast-API-Web-App\Scripts\python.exe
 # -*- coding: utf-8 -*-
 import argparse
 import sys
@@ -23,7 +23,7 @@ def main():
 [{lang}, {confidence}] {text}
         """.strip().format(text=args.text,
             lang=result.lang, confidence=result.confidence)
-        
+        print(result)
         return
 
     result = translator.translate(args.text, dest=args.dest, src=args.src)
@@ -34,7 +34,7 @@ def main():
 [pron.] {pronunciation}
     """.strip().format(src=result.src, dest=result.dest, original=result.origin,
                        text=result.text, pronunciation=result.pronunciation)
-    
+    print(result)
 
 if __name__ == '__main__':
     main()

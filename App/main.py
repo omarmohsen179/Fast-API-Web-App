@@ -4,7 +4,6 @@ from fastapi.testclient import TestClient
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from App.schemas import *
 from fastapi.middleware.gzip import GZipMiddleware
 from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
@@ -18,7 +17,7 @@ from App.Routes import auth, service, role
 # .\scripts\activate
 # python -m pip install --upgrade pip  --force
 # python -m ensurepip pip not found
-# uvicorn main:app --reload
+# uvicorn App.main:app --reload
 # git push --force azurex
 # git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
 # git fetch --all
@@ -49,8 +48,7 @@ app.include_router(role.router)
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 4"}
-
+    return {"running server here we go"}
 if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)

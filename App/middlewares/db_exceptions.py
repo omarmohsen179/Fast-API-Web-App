@@ -1,6 +1,5 @@
 import json
 
-from googletrans import Translator
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
@@ -8,7 +7,7 @@ from starlette.responses import Response
 from App.middlewares.messages import codes
 
 
-translator = Translator()
+#translator = Translator()
 
 
 class DBException(BaseHTTPMiddleware):

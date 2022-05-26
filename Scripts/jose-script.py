@@ -1,4 +1,4 @@
-#!D:\Code\python\Fast-API-Web-App\Scripts\python.exe
+#!D:\omar\Fast-API-Web-App\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'jose==1.0.0','console_scripts','jose'
 import re
 import sys

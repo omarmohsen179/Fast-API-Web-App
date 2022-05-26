@@ -1,5 +1,5 @@
 
-from App.models import Session,engine
+from App.models.models import Session,engine
 def db():
     db = Session(bind=engine)
     try:
