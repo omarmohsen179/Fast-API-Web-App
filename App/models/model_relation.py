@@ -37,8 +37,8 @@ class keyword(Base):
     items= relationship("keyword_item", back_populates="keyword")
 class keyword_item(Base):   
     __tablename__ = "keyword_item"
-    keyword_id = Column(ForeignKey('offer.Id'), primary_key=True)
-    keyword = relationship("keywords", back_populates="items")
+    keyword_id = Column(ForeignKey('keyword.Id'), primary_key=True)
+    keyword = relationship("keyword", back_populates="items")
     item_id = Column(ForeignKey('item.Id'), primary_key=True)
     item = relationship("item", back_populates="keywords")
 class item_category(Base):   
@@ -54,7 +54,7 @@ class order_item(Base):
     order = relationship("order", back_populates="items")
     item_id = Column(ForeignKey('item.Id'), primary_key=True)
     item = relationship("item", back_populates="orders")
-    quantity = Column(Integer, primary_key=True, index=True, nullable=False)
+    quantity = Column(Integer, nullable=False)
 class wishlist(Base):   
     __tablename__ = "wishlist"
     user_id = Column(ForeignKey('app_user.Id'), primary_key=True)
@@ -65,7 +65,7 @@ class offer_item(Base):
     __tablename__ = "offer_item"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     date =Column(DateTime, nullable=True,default=datetime.utcnow().strftime("%Y-%m-%d" "%H:%M:%S"))
-    quantity =Column(Integer, primary_key=True, index=True, nullable=False)
+    quantity =Column(Integer, nullable=True)
     offer_id = Column(ForeignKey('offer.Id'), primary_key=True)
     offer = relationship("offer", back_populates="offers_item")
     item_id = Column(ForeignKey('item.Id'), primary_key=True)

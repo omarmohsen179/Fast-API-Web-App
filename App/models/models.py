@@ -8,6 +8,32 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from  App.security import hashing
 from  App.models.model_relation import *
+class shop(Base):   
+    __tablename__ = "shop"
+    Id = Column(Integer, primary_key=True, index=True, nullable=False)
+
+    name = Column(String(255), nullable=False)
+    items = relationship("item",uselist=True, back_populates="shop_x")
+    users = relationship("user_shop", back_populates="shop")
+    category_id = Column(ForeignKey('shop_category.Id'), primary_key=True)
+    category = relationship("shop_category", back_populates="shop")
+class item(Base):   
+    __tablename__ = "item"
+    Id = Column(Integer, primary_key=True, index=True, nullable=False)
+    name = Column(String(255), nullable=False)
+    describe = Column(String(255), nullable=False)
+    shop_id = Column(ForeignKey('shop.Id'), primary_key=True)
+    shop_x:shop = relationship("shop", back_populates="items")
+    category_id = Column(ForeignKey('item_category.Id'), primary_key=True)
+    category = relationship("item_category", back_populates="item")
+    offers = relationship("offer_item", back_populates="item")
+    item_images = relationship("item_image", back_populates="item")
+    orders = relationship("order_item", back_populates="item")
+    wishlist = relationship("wishlist", back_populates="item")
+    
+    keywords = relationship("keyword_item", back_populates="item")
+
+    
 
 class user(Base):
     __tablename__ = "app_user"
@@ -25,7 +51,9 @@ class user(Base):
     roles = relationship("user_role", back_populates="user")
     shops = relationship("user_shop", back_populates="user")
     orders = relationship("order", back_populates="user")
-    wishlist = relationship("wishlist", back_populates="user")
+    wishlist = relationship("wishlist",   
+        cascade="all,delete-orphan",
+        uselist=True,back_populates="user")
 
 class role(Base):   
     __tablename__ = "role"
@@ -43,36 +71,9 @@ class order(Base):
     items = relationship("order_item", back_populates="order")
     total_cost=  Column(Float, default=0, nullable=False)
 
-class item(Base):   
-    __tablename__ = "item"
-    Id = Column(Integer, primary_key=True, index=True, nullable=False)
-    name = Column(String(255), nullable=False)
-    describe = Column(String(255), nullable=False)
-    shop_id = Column(ForeignKey('shop.Id'), primary_key=True)
-    category_id = Column(ForeignKey('item_category.Id'), primary_key=True)
-    category = relationship("item_category", back_populates="item")
-    shop = relationship("shop", back_populates="items")
-    item_images = relationship("item_image", back_populates="item")
-    orders = relationship("order_item", back_populates="item")
-    wishlist = relationship("wishlist", back_populates="item")
-    item_offers = relationship("offer_item", back_populates="item")
-    keywords = relationship("keyword_item", back_populates="item")
-class offer(Base):   
-    __tablename__ = "offer"
-    Id = Column(Integer, primary_key=True, index=True, nullable=False)
-    original_price =Column(Float, primary_key=True, index=True, nullable=False)
-    current_price =Column(Float, primary_key=True, index=True, nullable=False)
-    discount = Column(Float, primary_key=True, index=True, nullable=False)
-    offers_item = relationship("offer_item", back_populates="offer")
 
-class shop(Base):   
-    __tablename__ = "shop"
-    Id = Column(Integer, primary_key=True, index=True, nullable=False)
-    name = Column(String(255), nullable=False)
-    users = relationship("user_shop", back_populates="shop")
-    category_id = Column(ForeignKey('shop_category.Id'), primary_key=True)
-    category = relationship("shop_category", back_populates="shop")
-    items = relationship("item", back_populates="shop")
+
+
 class item_image(Base):   
     __tablename__ = "item_image"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
