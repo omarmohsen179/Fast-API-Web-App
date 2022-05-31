@@ -7,12 +7,13 @@ from dotenv import dotenv_values
 
 connection = dotenv_values("pyvenv.cfg")['dbmain']
 params = urllib.parse.quote_plus(connection)
-pyodbc_connection = pyodbc.connect(connection)
-cursor = pyodbc_connection.cursor()
-engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params), pool_size=10, max_overflow=20, connect_args={"check_same_thread": False})
-Base = declarative_base()
 
-Base.metadata.create_all(engine)
+pyodbc_connection = pyodbc.connect(connection)
+
+cursor = pyodbc_connection.cursor()
+engine = create_engine("mssql+pyodbc:///?odbc_connect={}".format(params))
+SessionLocal = sessionmaker(autocommit=True, autoflush=False, bind=engine)
+Base = declarative_base()
 
 
 

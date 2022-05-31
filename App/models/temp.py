@@ -53,7 +53,6 @@ class item(Base):
     category = relationship("item_category", back_populates="item")
     shop_id = Column(ForeignKey('shop.Id'), primary_key=True)
     shop = relationship("shop", back_populates="items")
-
     item_images = relationship("item_image", back_populates="item")
     orders = relationship("order_item", back_populates="item")
     wishlist = relationship("wishlist", back_populates="item")

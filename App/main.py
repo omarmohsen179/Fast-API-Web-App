@@ -9,6 +9,8 @@ from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
 from App.middlewares.db_exceptions import DBException
 from App.Routes import auth, service, role
+from App.models.models import Base
+from App.database.database import engine
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
@@ -25,6 +27,7 @@ from App.Routes import auth, service, role
 '''pip uninstall crypto
 pip uninstall pycryptodome
 pip install pycryptodome'''
+Base.metadata.create_all(bind=engine)
 app = FastAPI(debug=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
