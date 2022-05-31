@@ -15,11 +15,11 @@ router = APIRouter(
 
 
 
-@router.get('/', response_model=List[schemas.user])
+@router.get('/')
 async def get_user(db: Session = Depends(db)):
-    db_books:List[schemas.user] = db.query(models.User).options(
+    db_books:List[schemas.user] = db.query(models.user).options(
         joinedload(models.user.roles).options(
-            joinedload(models.UserRole.role)
+            joinedload(models.user_role.role)
         )
     ).all() 
     return db_books

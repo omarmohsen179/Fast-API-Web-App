@@ -27,7 +27,7 @@ from App.database.database import engine
 '''pip uninstall crypto
 pip uninstall pycryptodome
 pip install pycryptodome'''
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 app = FastAPI(debug=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

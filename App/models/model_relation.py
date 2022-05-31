@@ -57,3 +57,4 @@ class offer_item(Base):
     offer = relationship("offer", back_populates="offers_item")
     item_id = Column(ForeignKey('item.Id'))
     item = relationship("item", back_populates="item_offers")
+#extend_existing=True

@@ -19,18 +19,19 @@ class user(Base):
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     username = Column(String(255), unique=True, index=True, nullable=False)
     email = Column(String(255), unique=True, index=True, nullable=False)
+    is_confirmed = Column(Boolean, default=False, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     phone_number = Column(String(255), nullable=True)
     full_name = Column(String(255), nullable=True)
     profile_image = Column(String(255), nullable=True)
     is_active = Column(Boolean, default=False, nullable=True)
-    is_confirmed = Column(Boolean, default=False, nullable=False)
+    
     last_password_reset = Column(REAL, nullable=True)
-    date_of_birth = Column( DateTime, nullable=True,default=datetime.utcnow().strftime("%Y-%m-%d" "%H:%M:%S"))
+    date_of_birth = Column( DateTime, nullable=True,default=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
     shops = relationship("user_shop", back_populates="user")
     orders = relationship("order", back_populates="user")
     roles = relationship("user_role", back_populates="user")
-
+    wishlist = relationship("wishlist", back_populates="user")
 class shop(Base):   
     __tablename__ = "shop"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
@@ -49,33 +50,32 @@ class item(Base):
     shop = relationship("shop", back_populates="items")
     item_images = relationship("item_image", back_populates="item")
     wishlist = relationship("wishlist", back_populates="item")
+    item_offers = relationship("offer_item", back_populates="item")
 
 class order(Base):   
     __tablename__ = "order"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     total_cost=  Column(Integer, default=0, nullable=False)
     note = Column(String(255), nullable=False)
-    date = Column( DateTime, nullable=True,default=datetime.utcnow().strftime("%Y-%m-%d" "%H:%M:%S"))
+    date = Column( DateTime, nullable=True,default=datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"))
     user_id = Column(Integer,ForeignKey('app_user.Id'))
     user = relationship("user", back_populates="orders")
     order_item = relationship("order_item", back_populates="order")
     
-
+class offer(Base):   
+    __tablename__ = "offer"
+    Id = Column(Integer, primary_key=True, index=True, nullable=False)
+    original_price =Column(Float, nullable=False)
+    current_price =Column(Float,  nullable=False)
+    discount = Column(Float, nullable=False)
+    offers_item = relationship("offer_item", back_populates="offer")
 
 class role(Base):   
     __tablename__ = "role"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     name = Column(String(255), nullable=False)
     users = relationship("user_role", back_populates="role")
-class offer_item(Base):   
-    __tablename__ = "offer_item"
-    Id = Column(Integer, primary_key=True, index=True, nullable=False)
-    date =Column(DateTime, nullable=True,default=datetime.utcnow().strftime("%Y-%m-%d" "%H:%M:%S"))
-    quantity =Column(Integer, nullable=True)
-    offer_id = Column(ForeignKey('offer.Id'))
-    offer = relationship("offer", back_populates="offers_item")
-    item_id = Column(ForeignKey('item.Id'))
-    item = relationship("item", back_populates="item_offers")
+
     
 class wishlist(Base):   
     __tablename__ = "wishlist"
@@ -91,7 +91,7 @@ class wishlist(Base):
 
 
 with Session(bind=engine) as session:
-    users = [user(Id=1,username="admin",email="admin123@gmail.com",hashed_password=hashing.Hash.bcrypt("admin"))]
+    users = [user(Id=1,username="admin",email="admin123@gmail.com",hashed_password=hashing.Hash.bcrypt("admin"),is_confirmed=False)]
     roles = [role(Id=1,name="Blogs"),
              role(Id=2,name="Sale"),
              role(Id=3,name="Web Admin"),
@@ -104,3 +104,4 @@ with Session(bind=engine) as session:
     session.add_all(users)
     session.add_all(roles)
     session.add_all(user_roles)
+    #session.commit()
