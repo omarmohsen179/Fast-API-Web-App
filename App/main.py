@@ -8,7 +8,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
 from App.middlewares.db_exceptions import DBException
-from App.Routes import auth, service, role
+from App.Routes import auth, service, role,categories
 from App.models.models import Base
 from App.database.database import engine
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
@@ -46,7 +46,7 @@ app.add_middleware(GZipMiddleware)
 app.include_router(auth.router)
 app.include_router(service.router)
 app.include_router(role.router)
-
+app.include_router(categories.router)
 
 @app.get("/")
 def root():

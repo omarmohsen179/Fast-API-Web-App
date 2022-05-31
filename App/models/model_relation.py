@@ -25,7 +25,9 @@ class item_category(Base):
     __tablename__ = "item_category"
     Id = Column(Integer, primary_key=True, index=True, nullable=False)
     name = Column(String(255), nullable=False)
+    name_en = Column(String(255), nullable=True)
     describe = Column(String(255))
+    describe_en = Column(String(255))
     image_path = Column(String(255))
     items = relationship("item", back_populates="category")
 class user_role(Base):

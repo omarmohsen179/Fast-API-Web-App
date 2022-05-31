@@ -10,6 +10,15 @@ class role(BaseModel):
     Name: str
     class Config:
         orm_mode = True
+class categories(BaseModel):
+    Id: Optional[int]
+    name: Optional[str]
+    name_en: Optional[str]
+    describe: Optional[str]
+    describe_en: Optional[str]
+    image_path: Optional[str]
+    class Config:
+        orm_mode = True
 class token(BaseModel):
     value: str
     class Config:
