@@ -1,7 +1,5 @@
 
 from fastapi.staticfiles import StaticFiles
-from fastapi.testclient import TestClient
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -49,6 +47,6 @@ app.include_router(role.router)
 def root():
     # return RedirectResponse(url="/docs/")
     return {"running server here we go"}
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     app.debug = False
-    uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
+    uvicorn.run(app, host="fag1.azurewebsites.net", port=443)'''
