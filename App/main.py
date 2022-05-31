@@ -23,7 +23,7 @@ from App.database.database import engine
 # git push --force azurex
 # git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
 # git fetch --all
-
+# pip install -r requirements.txt --no-cache-dir^C
 '''pip uninstall crypto
 pip uninstall pycryptodome
 pip install pycryptodome'''

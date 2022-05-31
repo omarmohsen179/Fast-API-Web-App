@@ -28,3 +28,14 @@ def get_current_admin(data: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="unauthrized")
     return mytoken
+def sale_auth(data: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    mytoken = token.verify_token(data, credentials_exception)
+    if(mytoken.role != "Sale"):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="unauthrized")
+    return mytoken
