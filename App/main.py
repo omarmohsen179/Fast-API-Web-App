@@ -1,7 +1,7 @@
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.testclient import TestClient
-import uvicorn
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -9,8 +9,9 @@ from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
 from App.middlewares.db_exceptions import DBException
 from App.Routes import auth, service, role,categories
-from App.models.models import Base
-from App.database.database import engine
+#from App.models.models import Base
+#from App.database.database import engine
+#import uvicorn
 # sqlalchemy uvicorn alembic fastapi pyodbc python-dotenv
 # alembic revision --autogenerate -m "create account table"
 # alembic upgrade head
@@ -52,6 +53,7 @@ app.include_router(categories.router)
 def root():
     # return RedirectResponse(url="/docs/")
     return {"running server here we go 2"}
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
+'''
