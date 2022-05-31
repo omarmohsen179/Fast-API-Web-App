@@ -12,7 +12,7 @@ az account set --subscription $SUBSCRIPTION
 USERNAME="omarmohsen179"
 PASSWORD="Thanks010066@"
 
-git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
+#git remote add azure "https://$USERNAME@$SITENAME.scm.azurewebsites.net/$SITENAME.git"
 
 git add .
 git commit -m "omar"
