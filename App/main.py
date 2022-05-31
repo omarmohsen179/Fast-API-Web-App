@@ -51,7 +51,7 @@ app.include_router(categories.router)
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go"}
+    return {"running server here we go 1"}
 if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
