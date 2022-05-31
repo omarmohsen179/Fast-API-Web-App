@@ -1,11 +1,8 @@
 from datetime import datetime, timedelta
-from msilib.schema import Error
 from jose import jwt
 from jose.exceptions import JWTError
 from App.models import schemas
 from dotenv import dotenv_values
-from typing import Optional
-import   json 
 ALGORITHM = "HS256"
 
 def myconverter(o):
