@@ -33,8 +33,8 @@ async def create(request: schemas.create_account, db: Session):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                             detail=f"roles errors check roles")
     try:  
-        password = hashing.Hash.bcrypt(request.Password)
-        del request.Password,request.Roles
+        password = hashing.Hash.bcrypt(request.password)
+        del request.password,request.roles
         new_user = user(**request.dict(), HashedPassword=password,IsConfirmed=False)
         db.add(new_user)
         db.commit()

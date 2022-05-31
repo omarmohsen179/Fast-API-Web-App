@@ -7,7 +7,7 @@ from pydantic import validator, BaseModel,EmailStr
 
 class role(BaseModel):
     Id: int
-    Name: str
+    name: str
     class Config:
         orm_mode = True
 class categories(BaseModel):
@@ -30,22 +30,22 @@ class user_role(BaseModel):
         orm_mode = True
 class user(BaseModel):
     Id : int
-    Username:  Optional[str]
-    Email :  Optional[str]
-    HashedPassword :  Optional[str]
-    PhoneNumber:  Optional[str]
-    FullName :  Optional[str]
-    ProfileImage :  Optional[str]
-    IsActive :  Optional[bool]
-    IsConfirmed :  Optional[bool]
-    LastPasswordReset :  Optional[Any]
+    username:  Optional[str]
+    email :  Optional[str]
+    hashed_password :  Optional[str]
+    phone_number:  Optional[str]
+    full_name :  Optional[str]
+    profile_image :  Optional[str]
+    is_active :  Optional[bool]
+    is_confirmed :  Optional[bool]
+    last_password_reset :  Optional[Any]
     roles :  List[user_role]
     def dict(self, **kwargs):
-        data = super(user, self).dict(**kwargs)
         print(data['roles'])
+        data = super(user, self).dict(**kwargs)
         for b in data['roles']:
             b['Id']=b['role']['Id']
-            b['Name'] = b['role']['Name']
+            b['name'] = b['role']['name']
             del b['role']
 
         return data
@@ -53,25 +53,26 @@ class user(BaseModel):
         orm_mode = True
 class user_confirm(BaseModel):
     Id : int
-    Username:  Optional[str]
-    Email :  Optional[str]
-    HashedPassword :  Optional[str]
-    PhoneNumber:  Optional[str]
-    FullName :  Optional[str]
-    ProfileImage :  Optional[str]
-    IsActive :  Optional[bool]
-    IsConfirmed :  Optional[bool]
-    LastPasswordReset :  Optional[Any]
+    username:  Optional[str]
+    email :  Optional[str]
+    hashed_password :  Optional[str]
+    phone_number:  Optional[str]
+    full_name :  Optional[str]
+    profile_image :  Optional[str]
+    is_active :  Optional[bool]
+    is_confirmed :  Optional[bool]
+    last_password_reset :  Optional[Any]
     class Config:
         orm_mode = True
 
 class update_user(BaseModel):
     Id : Optional[int]=None
-    Username:  Optional[str]=None
-    Email :  Optional[str]=None
-    PhoneNumber:  Optional[str]=None
-    FullName :  Optional[str]=None
-    ProfileImage :  Optional[str]=None
+    username:  Optional[str]=None
+    email :  Optional[str]=None
+    hashed_password :  Optional[str]=None
+    phone_number:  Optional[str]=None
+    full_name :  Optional[str]=None
+    profile_image :  Optional[str]=None
     class Config:
         orm_mode = True
 
@@ -91,18 +92,17 @@ class reset_password(BaseModel):
         orm_mode = True
 
 class create_account(BaseModel):
-    Username: str
-    Email: EmailStr
-    PhoneNumber:  Optional[str]
-    ProfileImage: Optional[str]
-    Password: str
-    Roles: Optional[List[int]]
-    @validator('Username')
+    username: str
+    email: EmailStr
+    phone_number:  Optional[str]
+    profile_image: Optional[str]
+    rassword: str
+    roles: Optional[List[int]]
+    @validator('username')
     def username_alphanumeric(cls, v):
         #assert v.isalnum(), 'must be alphanumeric'
         return v
-
-    @validator("PhoneNumber")
+    @validator("phone_number")
     def phone_length(cls, v):
         if len(str(v)) != 10:
             raise ValueError("Phone number must be of ten digits")

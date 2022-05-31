@@ -15,7 +15,9 @@ router = APIRouter(
 
 
 
-@router.get('/')
+@router.get('/',
+#response_model=List[schemas.user]
+)
 async def get_user(db: Session = Depends(db)):
     db_books:List[schemas.user] = db.query(models.user).options(
         joinedload(models.user.roles).options(
@@ -28,7 +30,7 @@ async def get_user(db: Session = Depends(db)):
 
 @router.post('/create-account')
 async def createAccount(request: schemas.create_account, db: Session = Depends(db)):
-    request.Roles=[1,2]
+    request.roles=[1,2]
     create = await auth.create(request, db)
     return create
 
