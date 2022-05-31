@@ -13,7 +13,8 @@ router = APIRouter(
 
 @router.get('')
 def get_user(db: Session = Depends(db)):
-    return crud.role_crud.get_all(db)
+    return crud.role_crud.get_all(xx)
+
 
 
 @router.post('')
