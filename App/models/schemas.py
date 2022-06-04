@@ -112,6 +112,11 @@ class reset_password(BaseModel):
         orm_mode = True
 
 
+class Banner(BaseModel):
+    title: str
+    text: str
+
+
 class create_account(BaseModel):
     username: str
     email: EmailStr
