@@ -44,7 +44,7 @@ async def get_user(file: UploadFile = File(...), db: Session = Depends(db)):
 
 @router.get('/testx2'
             )
-async def login(file: UploadFile = File(...), name: str = Form(), name_en: str = Form()):
+async def login(file: UploadFile = File(...), name: str = Form(...), name_en: str = Form(...)):
     return {'fiel': file, 'name': name, name_en: name_en}
 
 
