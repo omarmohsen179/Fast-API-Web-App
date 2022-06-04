@@ -1,4 +1,4 @@
-
+from fastapi import FastAPI, Form
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
@@ -40,6 +40,12 @@ async def get_user(db: Session = Depends(db)):
 async def get_user(file: UploadFile = File(...), db: Session = Depends(db)):
 
     return file
+
+
+@router.get('/testx2'
+            )
+async def login(file: UploadFile = File(...), name: str = Form(), name_en: str = Form()):
+    return {'fiel': file, 'name': name, name_en: name_en}
 
 
 @router.post('/create-account')
