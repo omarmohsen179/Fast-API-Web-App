@@ -10,30 +10,24 @@ router = APIRouter(
 )
 
 
-
 @router.get('')
 def get_user(db: Session = Depends(db)):
     return crud.role_crud.get_all(db)
 
 
-
 @router.post('')
 def add(request: schemas.role, db: Session = Depends(db)):
- 
     return crud.role_crud.add(db, models.role(Name=request.Name))
 
 
 @router.post('/list')
 def addlist(request: list[schemas.role], db: Session = Depends(db)):
-    values = list(map(lambda e: models.Role(**e.dict()), request))
-    return crud.role_crud.add_list(db, values)
+    return crud.role_crud.add_list(db, request)
 
 
 @router.put('')
 def update(request: schemas.role, db: Session = Depends(db)):
-   # xx=  crud.RoleCrud.get(db).filter(models.Role.Id == request.Id).first()
-    #xx.Name= request.Name
-    return crud.role_crud.update(db,request)
+    return crud.role_crud.update(db, request)
 
 
 @router.delete('/{id}')

@@ -1,11 +1,11 @@
 
+from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 from this import d
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from App.database.db import db
 from App.models import schemas, models
 from App.Services import crud
-from sqlalchemy import or_, and_
 router = APIRouter(
     prefix="/api/category",
     tags=['category']
@@ -14,17 +14,26 @@ router = APIRouter(
 
 @router.get('')
 def get_user(db: Session = Depends(db)):
-    return crud.categories_crud.get_all(db)
-
-
-@router.post('')
-def add(request: schemas.categories, db: Session = Depends(db)):
-    return crud.categories_crud.add(db, request)
+    return crud.categories_crud.get(db).all()
 
 
 @router.get('/{id}')
 def get_user(id: int, db: Session = Depends(db)):
-    return crud.categories_crud.get_filter(db, models.item_category.Id == id)
+    return crud.item_crud.get_filter(db, models.item == id).all()
+
+
+@router.post('')
+def add(request: schemas.categories, db: Session = Depends(db)):
+    del request.Id
+    temp = models.item_category(**request.dict())
+    print(temp)
+    return crud.categories_crud.add(db, temp)
+
+
+@router.post('/list')
+def addlist(request: list[schemas.categories], db: Session = Depends(db)):
+    values = list(map(lambda e: models.item_category(**e.dict()), request))
+    return crud.categories_crud.add_list(db, values)
 
 
 @router.put('')

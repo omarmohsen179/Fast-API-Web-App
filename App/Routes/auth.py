@@ -8,6 +8,7 @@ from App.Services import crud, auth
 from sqlalchemy.orm import joinedload
 from App.security import Oauth
 from fastapi import status, HTTPException
+from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 router = APIRouter(
     prefix="/api/auth",
     tags=['auth']
@@ -24,6 +25,21 @@ async def get_user(db: Session = Depends(db)):
         )
     ).all()
     return db_books
+
+
+@router.get('/test',
+            # response_model=List[schemas.user]
+            )
+async def get_user(db: Session = Depends(db)):
+
+    return crud.user_crud.get_filter(db, join=[models.user.roles, models.user_role.role])
+
+
+@router.get('/testx'
+            )
+async def get_user(file: UploadFile = File(...), db: Session = Depends(db)):
+
+    return file
 
 
 @router.post('/create-account')

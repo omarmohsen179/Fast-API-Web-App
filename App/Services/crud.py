@@ -3,7 +3,7 @@ from requests import Response
 from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 from fastapi.encoders import jsonable_encoder
-from App.models.models import user, role, user_role, item_category
+from App.models.models import user, role, user_role, item_category, item
 from App.models.schemas import response
 from App.Services import base
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
@@ -16,8 +16,18 @@ class crud(Generic[ModelType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
 
-    def get(self, db: Session):
-        return db.query(self.model)
+    def get_all(self, db: Session):
+        return db.query(self.model).all()
+
+    def get_filter(self, db: Session, filter: Any = None, join: Any = None):
+        data = db.query(self.model)
+        print(join)
+        if join != None:
+            for i in join:
+                data.options(i)
+        if filter != None:
+            data.filter(filter)
+        return data.all()
 
     def get_pagenation(self, db: Session, skip: int = 0, limit: int = 100):
         return (
@@ -28,12 +38,10 @@ class crud(Generic[ModelType]):
             .all()
         )
 
-    def get_all(self, db: Session):
-        return db.query(self.model).all()
-
     def add(self, db: Session, object):
         try:
-
+            del object.Id
+            object = self.model(**object.dict())
             db.add(object)
             db.commit()
             db.refresh(object)
@@ -44,6 +52,7 @@ class crud(Generic[ModelType]):
 
     def add_list(self, db: Session, object):
         try:
+            object = list(map(lambda e: self.model(**e.dict()), request))
             db.add_all(object)
             db.commit()
             # db.refresh(object)
@@ -79,4 +88,5 @@ class crud(Generic[ModelType]):
 user_crud = crud(user)
 role_crud = crud(role)
 categories_crud = crud(item_category)
+item_crud = crud(item)
 user_role_crud = crud(user_role)
