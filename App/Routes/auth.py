@@ -35,17 +35,17 @@ async def get_user(db: Session = Depends(db)):
     return crud.user_crud.get_filter(db, join=[models.user.roles, models.user_role.role])
 
 
-@router.get('/testx'
-            )
+@router.post('/testx'
+             )
 async def get_user(file: UploadFile = File(...), db: Session = Depends(db)):
 
     return file
 
 
-@router.get('/testx2'
-            )
-async def login(file: UploadFile = File(...), name: str = Form(...), name_en: str = Form(...)):
-    return {'fiel': file, 'name': name, name_en: name_en}
+@router.post('/testx2'
+             )
+async def login(name: schemas.categories = Form(...)):
+    return {'name en': name.name_en, 'name': name.name}
 
 
 @router.post('/create-account')
