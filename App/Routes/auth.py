@@ -48,6 +48,11 @@ async def login(name: schemas.categories = Form(...)):
     return {'name en': name.name_en, 'name': name.name}
 
 
+@router.post("/login/xxx")
+async def login(username: str = Form(), password: str = Form()):
+    return {"username": username}
+
+
 @router.post('/create-account')
 async def createAccount(request: schemas.create_account, db: Session = Depends(db)):
     request.roles = [1, 2]
