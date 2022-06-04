@@ -49,7 +49,7 @@ async def login(name: schemas.categories = Form(...)):
 
 
 @router.post("/login/xxx")
-async def login(username: str = Form(), password: str = Form()):
+async def login(username: str = Form(...)):
     return {"username": username}
 
 
