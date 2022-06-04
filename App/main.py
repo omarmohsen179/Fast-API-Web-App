@@ -8,7 +8,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
 from App.middlewares.db_exceptions import DBException
-from App.Routes import auth, service, role,categories
+from App.Routes import auth, service, role, categories
 #from App.models.models import Base
 #from App.database.database import engine
 #import uvicorn
@@ -28,7 +28,7 @@ from App.Routes import auth, service, role,categories
 '''pip uninstall crypto
 pip uninstall pycryptodome
 pip install pycryptodome'''
-#Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 app = FastAPI(debug=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -49,10 +49,13 @@ app.include_router(service.router)
 app.include_router(role.router)
 app.include_router(categories.router)
 
+
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 3"}
+    return {"running server here we go 4"}
+
+
 '''if __name__ == "__main__":
     app.debug = False
     uvicorn.run(app, host="fag1.azurewebsites.net", port=443)
