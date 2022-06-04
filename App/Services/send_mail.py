@@ -36,8 +36,8 @@ conf = ConnectionConfig(
 
 async def send_email_async(subject: str, email_to: str, body: schemas.template_body):
 
-    body.helpLink="support.com"
-    body.unsubscribeMail="unsupport.com"
+    body.helpLink = "support.com"
+    body.unsubscribeMail = "unsupport.com"
     message = MessageSchema(
         subject=subject,
         recipients=email_to,

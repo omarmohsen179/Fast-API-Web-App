@@ -1,4 +1,5 @@
 
+from this import d
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from App.database.db import db
@@ -10,24 +11,28 @@ router = APIRouter(
 )
 
 
-
 @router.get('')
 def get_user(db: Session = Depends(db)):
-    return crud.categories_crud.get(db)
+    return crud.categories_crud.get(db).all()
 
 
 @router.post('')
 def add(request: schemas.categories, db: Session = Depends(db)):
-    return crud.categories_crud.add(db, models.role(Name=request.Name))
+    del request.Id
+    temp = models.item_category(**request.dict())
+    print(temp)
+    return crud.categories_crud.add(db, temp)
+
+
 @router.post('/list')
 def addlist(request: list[schemas.categories], db: Session = Depends(db)):
-    values = list(map(lambda e: models.Role(**e.dict()), request))
+    values = list(map(lambda e: models.item_category(**e.dict()), request))
     return crud.categories_crud.add_list(db, values)
 
 
 @router.put('')
 def update(request: schemas.categories, db: Session = Depends(db)):
-    return crud.categories_crud.update(db,request)
+    return crud.categories_crud.update(db, request)
 
 
 @router.delete('/{id}')

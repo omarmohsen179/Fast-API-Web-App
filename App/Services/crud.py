@@ -1,8 +1,9 @@
 
+from requests import Response
 from sqlalchemy.orm import Session
 from fastapi import status, HTTPException
 from fastapi.encoders import jsonable_encoder
-from App.models.models import user, role,user_role,item_category
+from App.models.models import user, role, user_role, item_category
 from App.models.schemas import response
 from App.Services import base
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
@@ -14,8 +15,10 @@ ModelType = TypeVar("ModelType", bound=base.Base)
 class crud(Generic[ModelType]):
     def __init__(self, model: Type[ModelType]):
         self.model = model
+
     def get(self, db: Session):
         return db.query(self.model)
+
     def get_pagenation(self, db: Session, skip: int = 0, limit: int = 100):
         return (
             db.query(self.model)
@@ -56,7 +59,7 @@ class crud(Generic[ModelType]):
             db.query(self.model).filter(
                 self.model.Id == id).update(obj_in_data)
             db.commit()
-            object.Id=id
+            object.Id = id
             return object
         except BaseException as err:
             return err
@@ -65,12 +68,12 @@ class crud(Generic[ModelType]):
         db.query(self.model).filter(
             self.model.Id == id).delete()
         db.commit()
-        return Response(success=True)
+        return response(success=True)
 
     def delete_all(self, db: Session):
         db.query(self.model).delete()
         db.commit()
-        return Response(success=True)
+        return response(success=True)
 
 
 user_crud = crud(user)
