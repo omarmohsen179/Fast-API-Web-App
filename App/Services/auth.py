@@ -12,7 +12,7 @@ from App.Services.crud import user_crud
 from datetime import datetime, timedelta
 from sqlalchemy.orm import joinedload
 from typing import List, Optional, Any
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 import base64
 domain = dotenv_values("pyvenv.cfg")['domain']
@@ -111,7 +111,7 @@ def confirm(request: str, db: Session):
 
 async def reset_password_request(request: str, db: Session = Depends(db)):
     try:
-        object: user = db.query(User).filter(
+        object: user = db.query(user).filter(
             user.email == request).first()
         tokenx = schemas.confirm_token(username=object.username)
         access_token = str(token.create_access_token_confirm(
@@ -143,7 +143,7 @@ def reset_password(request: schemas.reset_password, db: Session = Depends(db)):
         object.HashedPassword = hashing.Hash.bcrypt(request.Password)
         object.LastPasswordReset = datetime.timestamp(datetime.utcnow())
         print(object.LastPasswordReset)
-        UserCrud.update(db, schemas.user_confirm(
+        user_crud.update(db, schemas.user_confirm(
             **object.__dict__
         ))
         return "Password been reset successfully"
