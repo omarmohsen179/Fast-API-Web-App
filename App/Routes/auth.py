@@ -9,11 +9,24 @@ from sqlalchemy.orm import joinedload
 from App.security import Oauth
 from fastapi import status, HTTPException
 from App.Services import image_uploader
+from pydantic import BaseModel, ValidationError
+from fastapi.encoders import jsonable_encoder
+import json
 from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 router = APIRouter(
     prefix="/api/auth",
     tags=['auth']
 )
+
+
+async def checker(data: str = Form(...)):
+    try:
+        print(data)
+        model = schemas.Banner.parse_raw(data)
+    except ValidationError as e:
+        raise HTTPException(detail=jsonable_encoder(
+            e.errors()), status_code=status.HTTP_400_BAD_REQUEST)
+    return model
 
 
 @router.get('/',
@@ -28,45 +41,17 @@ async def get_user(db: Session = Depends(db)):
     return db_books
 
 
-@router.get('/test',
-            # response_model=List[schemas.user]
-            )
+@router.get('/test')
 async def get_user(db: Session = Depends(db)):
+    db_books: List[schemas.user] = crud.user_crud.get_filter(
+        db, join=[models.user_role.role, models.user.roles])
 
-    return crud.user_crud.get_filter(db, join=[models.user.roles, models.user_role.role])
-
-
-@router.post('/testx'
-             )
-async def get_user(file: UploadFile = File(...), db: Session = Depends(db)):
-
-    return file
-
-
-@router.post('/testx2'
-             )
-async def login(name: schemas.categories = Form(...)):
-    print(name)
-    return {'name en': name.name_en, 'name': name.name}
+    return db_books
 
 
 @router.post("/test_1")
-async def create_banner(banner: schemas.Banner = Depends(), image: UploadFile = File(...)):
-    imagex = (await image_uploader.upload_file(image))
-    print(imagex)
+async def create_banner(banner: schemas.Banner = Depends(checker), image: UploadFile = File(...)):
     return {"JSON Payload ": banner.dict(), "Uploaded Filename": image.filename}
-
-
-@router.post("/test_2")
-async def create_banner(banner: schemas.Banner = Form(...), image: UploadFile = File(...)):
-    imagex = (await image_uploader.upload_file(image))
-    print(imagex)
-    return {"JSON Payload ": banner.dict(), "Uploaded Filename": image.filename}
-
-
-@router.post("/login/xxx")
-async def login(username: str = Form(...)):
-    return {"username": username}
 
 
 @router.post('/create-account')

@@ -1,6 +1,5 @@
 
 from fastapi.staticfiles import StaticFiles
-from fastapi.testclient import TestClient
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +7,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from App.middlewares.validation_middleware import FieldValidation
 from App.middlewares.db_middleware import DBConnection
 from App.middlewares.db_exceptions import DBException
-from App.Routes import auth, service, role, categories
+from App.Routes import auth, service, role, categories, home_slider
 #from App.models.models import Base
 #from App.database.database import engine
 #import uvicorn
@@ -45,6 +44,7 @@ app.add_middleware(DBException)
 app.add_middleware(FieldValidation)
 app.add_middleware(GZipMiddleware)
 app.include_router(auth.router)
+app.include_router(home_slider.router)
 app.include_router(service.router)
 app.include_router(role.router)
 app.include_router(categories.router)

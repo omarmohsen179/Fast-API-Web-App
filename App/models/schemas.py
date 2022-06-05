@@ -1,6 +1,10 @@
 from typing import List, Optional, Any
 from datetime import date, datetime, timedelta
-from pydantic import validator, BaseModel, EmailStr
+from numpy import integer
+from pydantic import Field, validator, BaseModel, EmailStr
+from App.database.mongo_database import PyObjectId
+
+from bson import ObjectId
 
 
 class role(BaseModel):
@@ -115,6 +119,7 @@ class reset_password(BaseModel):
 class Banner(BaseModel):
     title: str
     text: str
+    data:  Optional[List[int]]
 
 
 class create_account(BaseModel):

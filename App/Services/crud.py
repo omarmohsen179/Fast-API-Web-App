@@ -7,13 +7,23 @@ from App.models.models import user, role, user_role, item_category, item
 from App.models.schemas import response
 from App.Services import base
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
-
+from sqlalchemy.orm import joinedload
 
 ModelType = TypeVar("ModelType", bound=base.Base)
 
 
 class crud(Generic[ModelType]):
+    __instance = None
+
+    @staticmethod
+    def getInstance():
+        """ Static access method. """
+        if crud.__instance == None:
+            crud()
+        return crud.__instance
+
     def __init__(self, model: Type[ModelType]):
+        crud.__instance = self
         self.model = model
 
     def get_all(self, db: Session):
@@ -21,10 +31,9 @@ class crud(Generic[ModelType]):
 
     def get_filter(self, db: Session, filter: Any = None, join: Any = None):
         data = db.query(self.model)
-        print(join)
         if join != None:
             for i in join:
-                data.options(i)
+                data.options(joinedload(i))
         if filter != None:
             data.filter(filter)
         return data.all()
@@ -85,8 +94,8 @@ class crud(Generic[ModelType]):
         return response(success=True)
 
 
-user_crud = crud(user)
-role_crud = crud(role)
-categories_crud = crud(item_category)
-item_crud = crud(item)
-user_role_crud = crud(user_role)
+user_crud = crud(user).getInstance()
+role_crud = crud(role).getInstance()
+categories_crud = crud(item_category).getInstance()
+item_crud = crud(item).getInstance()
+user_role_crud = crud(user_role).getInstance()
