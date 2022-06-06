@@ -17,7 +17,10 @@ router = APIRouter(
 
 @router.get('')
 async def get_students():
-    return await crud_mongo.home_slider_crud.get()
+    try:
+        return await crud_mongo.home_slider_crud.get()
+    except Exception as ex:
+        return ex
 
 
 @router.post('')
