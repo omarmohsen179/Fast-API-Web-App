@@ -24,7 +24,7 @@ from App.Routes import auth, service, role, categories, home_slider
 # git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
 # git fetch --all
 # pip install -r requirements.txt --no-cache-dir^C
-
+#python -m ensurepip
 '''pip uninstall crypto
 pip uninstall pycryptodome
 pip install pycryptodome'''

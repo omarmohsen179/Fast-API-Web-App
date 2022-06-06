@@ -1,7 +1,5 @@
-from typing import List, Optional, Any
-from datetime import date, datetime, timedelta
-from numpy import integer
-from pydantic import Field, validator, BaseModel, EmailStr
+
+from pydantic import Field, BaseModel, EmailStr
 from App.database.mongo_database import PyObjectId, db
 
 from bson import ObjectId
