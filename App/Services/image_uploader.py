@@ -3,8 +3,6 @@ from fastapi import APIRouter, Depends, status, Body, UploadFile, File
 import os
 from typing import List
 import uuid
-from PIL import Image
-import filetype
 from App.models.schemas import image_response
 
 
