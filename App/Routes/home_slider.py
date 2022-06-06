@@ -1,8 +1,11 @@
 
+from email.mime import image
 from this import d
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, File
 from App.database.db import db
+from App.Services import image_uploader
+from fastapi import APIRouter,  BackgroundTasks,  status, UploadFile, File, HTTPException
 from App.models import mongo_models
 from App.Services import crud_mongo
 from sqlalchemy import or_, and_
@@ -14,15 +17,13 @@ router = APIRouter(
 
 @router.get('')
 async def get_students():
-    students = await crud_mongo.home_slider_crud.retrieve_students()
-    if students:
-        return students
-    return "Empty list returned"
+    return await crud_mongo.home_slider_crud.get()
 
 
 @router.post('')
-async def add(request: mongo_models.home_slider):
-    return await crud_mongo.home_slider_crud.add(request)
+async def add(image: UploadFile = File(...)):
+    image = (await image_uploader.upload_file(image))
+    return await crud_mongo.home_slider_crud.add(mongo_models.home_slider(image_path=image.result))
 
 
 @router.delete('/{id}')

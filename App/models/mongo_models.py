@@ -24,6 +24,12 @@ class home_slider(BaseModel):
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+        schema_extra = {
+            "example": {
+                "image_path": "Jane Doe",
+                "item_id": "1"
+            }
+        }
 
 
 home_slider_collection = db.get_collection("home_slider_collection")
