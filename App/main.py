@@ -24,6 +24,7 @@ from App.Routes import auth, service, role, categories, home_slider
 # git remote add azure "https://omarmohsen179@ecommercy.scm.azurewebsites.net/ecommercy.git"
 # git fetch --all
 # pip install -r requirements.txt --no-cache-dir^C
+
 '''pip uninstall crypto
 pip uninstall pycryptodome
 pip install pycryptodome'''
@@ -53,7 +54,7 @@ app.include_router(categories.router)
 @app.get("/")
 def root():
     # return RedirectResponse(url="/docs/")
-    return {"running server here we go 4"}
+    return {"running server here we go 2"}
 
 
 '''if __name__ == "__main__":
