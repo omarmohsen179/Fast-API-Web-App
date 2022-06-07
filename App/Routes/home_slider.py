@@ -30,5 +30,5 @@ async def add(image: UploadFile = File(...)):
 
 
 @router.delete('/{id}')
-def delete(id: str):
-    return crud_mongo.home_slider_crud.delete(id)
+async def delete(id: str):
+    return await crud_mongo.home_slider_crud.delete(id)

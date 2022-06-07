@@ -69,7 +69,9 @@ class crud_model(Generic[ModelType]):
 
 
     async def delete(self, id: str):
-        student = await self.model.find_one({"_id": ObjectId(id)})
+        xx = await self.model.find_one({"_id": ObjectId(id)})
+        student = self.helper(xx)
+        print(student)
         if student:
             await self.model.delete_one({"_id": ObjectId(id)})
         return True
